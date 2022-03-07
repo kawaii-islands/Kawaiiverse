@@ -1,24 +1,30 @@
-import AppBar from "@mui/material/AppBar";
-import { Toolbar } from "@mui/material";
-import logo from "src/assets/images/logo.svg";
-import NavLinks from "../NavLinks";
-import styled from "@emotion/styled/macro";
-
-const CustomToolbar = styled(Toolbar)({
-  justifyContent: "space-between",
-  height: "100%",
-  minHeight: "48px !important",
-  paddingLeft: "24px !important",
-});
+import { useState } from "react";
+import logo from "src/assets/images/logo.png";
+import styles from "./index.module.scss";
+import cn from "classnames/bind";
+import NavModal from "./NavModal";
+const cx = cn.bind(styles);
 
 const Header = () => {
+  const [openNav, setOpenNav] = useState(false);
   return (
-    <AppBar>
-      <CustomToolbar>
-        <img src={logo} alt="" height={37} />
-        <NavLinks />
-      </CustomToolbar>
-    </AppBar>
+    <nav className={cx("navbar")}>
+      <div className={cx("menu-icon")} onClick={() => setOpenNav(!openNav)}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div className={cx("left")}>
+        <img src={logo} alt="Logo" className={cx("item")} />
+        <div className={cx("list")}>
+          <div className={cx("item")}>About</div>
+          <div className={cx("item")}>Store</div>
+          <div className={cx("item")}>Game</div>
+        </div>
+      </div>
+      <div className={cx("cn-wallet")}>Connect Wallet</div>
+      {openNav && <NavModal setOpenNav={setOpenNav}/>}
+    </nav>
   );
 };
 

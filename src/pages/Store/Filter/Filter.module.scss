@@ -1,0 +1,57 @@
+.filter {
+  background: #162f54;
+  border-radius: 12px;
+  padding: 60px 20px;
+  height: 100%;
+
+  .card-header {
+    display: flex;
+    align-items: center;
+
+    .title {
+      font-weight: 600;
+      font-size: 24px;
+      color: #ffffff;
+      margin-left: 12px;
+    }
+  }
+
+  .collapse {
+    margin-top: 72px;
+
+    .panel-content {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 23px;
+      color: #ffffff;
+
+      .name {
+        display: flex;
+        align-items: center;
+        margin-bottom: 14px;
+        cursor: pointer;
+
+        &-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background-color: #ffffff;
+          //   border: 1px solid #6dd0e7;
+        }
+
+        &-text {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 21px;
+          color: #ffffff;
+          margin-left: 12px;
+
+          &:hover {
+            color: rgba(255, 255, 255, 0.8);
+			transition-duration: 0.3s;
+          }
+        }
+      }
+    }
+  }
+}

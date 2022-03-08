@@ -10,6 +10,7 @@ import store from "./store";
 import { useWeb3React } from "@web3-react/core";
 import { useEagerConnect, useInactiveListener } from "src/helpers/hooks";
 import Home from "./pages/Home";
+import Store from "./pages/Store";
 import Messages from "./components/Messages";
 import Store from 'src/pages/Store';
 import 'antd/dist/antd.css';
@@ -26,6 +27,7 @@ function App() {
 		}
 	}, [activatingConnector, connector]);
 
+<<<<<<< HEAD
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={light}>
@@ -41,6 +43,25 @@ function App() {
 			</ThemeProvider>
 		</Provider>
 	);
+=======
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={light}>
+        <CssBaseline />
+        <Messages />
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+          <Routes>
+            <Route path="/store/:id" element={<Store />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </Provider>
+  );
+>>>>>>> ba568ca8ae4323668cb87abb8df18cabfad98531
 }
 
 export default App;

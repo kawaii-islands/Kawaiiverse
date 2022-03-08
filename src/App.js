@@ -10,6 +10,7 @@ import store from "./store";
 import { useWeb3React } from "@web3-react/core";
 import { useEagerConnect, useInactiveListener } from "src/helpers/hooks";
 import Home from "./pages/Home";
+import Store from "./pages/Store";
 import Messages from "./components/Messages";
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+          </Routes>
+          <Routes>
+            <Route path="/store/:id" element={<Store />} />
           </Routes>
         </Router>
       </ThemeProvider>

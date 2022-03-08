@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import cn from 'classnames/bind';
 import styles from './NFTItem.module.scss';
 import logoKawaii from '../../../assets/images/logo_kawaii.png';
-import { UrlJsonRpcProvider } from '@ethersproject/providers';
 
 const cx = cn.bind(styles);
 
-const NFTItem = () => {
+const NFTItem = ({ onClick }) => {
 	return (
-		<div className={cx("nft-item")}>
+		<div className={cx("nft-item")} onClick={onClick}>
 			<div
 				className={cx("top")}
 				style={{ backgroundImage: `url(https://images.kawaii.global/kawaii-marketplace-image/category/${"Icon_Plant_Big"}.png)` }}
@@ -20,7 +19,7 @@ const NFTItem = () => {
 
 			<div className={cx("bottom")}>
 				<div className={cx("name")}>
-					<img src={logoKawaii} className={cx("name-avatar")}/>
+					<img src={logoKawaii} className={cx("name-avatar")} />
 					<span className={cx("name-text")}>Kawaii island</span>
 				</div>
 				<div className={cx("title")}>Greenoo</div>

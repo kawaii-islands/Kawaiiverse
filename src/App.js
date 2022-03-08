@@ -12,7 +12,7 @@ import { useEagerConnect, useInactiveListener } from "src/helpers/hooks";
 import Home from "./pages/Home";
 import Store from "./pages/Store";
 import Messages from "./components/Messages";
-import Store from 'src/pages/Store';
+import NFTDetail from "./pages/NFTDetail";
 import 'antd/dist/antd.css';
 
 function App() {
@@ -27,41 +27,23 @@ function App() {
 		}
 	}, [activatingConnector, connector]);
 
-<<<<<<< HEAD
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={light}>
 				<CssBaseline />
 				<Messages />
 				<Router>
-					{/* <Header /> */}
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/store" element={<Store />} />
+						<Route path="store" >
+							<Route index element={<Store />} />
+							<Route path=":id" element={<NFTDetail />} />
+						</Route>
 					</Routes>
 				</Router>
 			</ThemeProvider>
-		</Provider>
+		</Provider >
 	);
-=======
-  return (
-    <Provider store={store}>
-      <ThemeProvider theme={light}>
-        <CssBaseline />
-        <Messages />
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-          <Routes>
-            <Route path="/store/:id" element={<Store />} />
-          </Routes>
-        </Router>
-      </ThemeProvider>
-    </Provider>
-  );
->>>>>>> ba568ca8ae4323668cb87abb8df18cabfad98531
 }
 
 export default App;

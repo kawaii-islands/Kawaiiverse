@@ -10,12 +10,15 @@ import { Search as SearchIcon } from "@material-ui/icons";
 import { Menu, Dropdown, Row, Col, Pagination } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import NFTItem from './NFTItem/NFTItem';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const cx = cn.bind(styles);
 
 const mockData = [1, 2, 3, 4, 5, 6];
 
 const Store = () => {
+	const navigate = useNavigate();
+
 	const menu = (
 		<Menu>
 			<Menu.Item>
@@ -78,7 +81,9 @@ const Store = () => {
 						<Row gutter={[20, 20]}>
 							{mockData.map((item, index) => (
 								<Col md={8} key={index}>
-									<NFTItem />
+									<NFTItem
+										onClick={() => navigate(`/store/1`)}
+									/>
 								</Col>
 							))}
 						</Row>
@@ -95,6 +100,7 @@ const Store = () => {
 
 				</div>
 			</div>
+			<Outlet />
 		</MainLayout>
 	)
 }

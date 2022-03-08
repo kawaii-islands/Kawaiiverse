@@ -1,55 +1,60 @@
 $mobile: 968px;
 
 .navbar {
-    position: relative;
+  position: relative;
   background: #132d50;
   width: 100%;
   height: 70px;
-  padding: 14px 8%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: "Mali", cursive;
-  @media (max-width: $mobile) {
-    padding: 14px;
-  }
-  .menu-icon {
-    cursor: pointer;
-    display: none;
-    @media (max-width: $mobile) {
-      display: block;
-    }
-    div {
-      width: 35px;
-      height: 5px;
-      background-color: white;
-      margin: 6px 0;
-    }
-  }
-  .left {
+
+  .container {
+    max-width: 1200px;
+	height: 70px;
+    margin: auto auto;
     display: flex;
     align-items: center;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
+    justify-content: space-between;
 
-    img {
+    @media (max-width: $mobile) {
+      padding: 14px;
+    }
+    .menu-icon {
       cursor: pointer;
-      width: 82px;
-      height: 50px;
-      margin-right: 100px;
+      display: none;
       @media (max-width: $mobile) {
-        margin-right: 0;
+        display: block;
+      }
+      div {
+        width: 35px;
+        height: 5px;
+        background-color: white;
+        margin: 6px 0;
       }
     }
-    .list {
+    .left {
       display: flex;
-      @media (max-width: $mobile) {
-        display: none;
-      }
-      .item {
-        margin-right: 60px;
+      align-items: center;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 600;
+
+      img {
         cursor: pointer;
+        width: 82px;
+        height: 50px;
+        margin-right: 100px;
+        @media (max-width: $mobile) {
+          margin-right: 0;
+        }
+      }
+      .list {
+        display: flex;
+        @media (max-width: $mobile) {
+          display: none;
+        }
+        .item {
+          margin-right: 60px;
+          cursor: pointer;
+        }
       }
     }
   }

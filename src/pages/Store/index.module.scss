@@ -1,46 +1,73 @@
-@import url("https://fonts.googleapis.com/css2?family=Mali:wght@200;400;500&display=swap");
-
-.container {
+.store {
+  display: flex;
   width: 100%;
-  padding: 80px 120px;
-  min-height: 100vh;
+  color: #ffffff;
 
-  .image {
-    width: 90%;
+  .left {
+    width: 28%;
+    margin-bottom: 30px;
   }
 
-  .name {
-    font-family: "Mali";
-  }
+  .right {
+    width: 72%;
+    margin-left: 30px;
+    margin-bottom: 30px;
 
-  .textTag {
-    margin-top: 30px;
-    width: fit-content;
-    background: #162f54;
-    font-family: "Mali";
-    .tagName {
-      color: whitesmoke;
+    &-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &-title {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 26px;
+        color: #ffffff;
+      }
+
+      .group-search {
+        display: flex;
+        align-items: center;
+
+        .search {
+          width: 100%;
+          border-bottom: 2px solid #ffffff;
+          color: #ffffff !important;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-family: "Mali-Regular", sans-serif;
+
+          .icon {
+            cursor: pointer;
+            color: #ffffff;
+          }
+        }
+
+        .drop-down {
+          background: #101a3f;
+          border-radius: 6px;
+          padding: 12px;
+          width: 172px;
+          margin-left: 36px;
+          font-size: 14px;
+
+          &-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
     }
-    .tagPrice {
-      background-color: linear-gradient(180deg, #00c6fb 0%, #005bea 100%);
-      background-clip: text;
-      color: transparent;
+
+    &-main {
+      margin-top: 36px;
     }
-    .tagContent {
-      color: #a0edff;
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
     }
-  }
-  .orderButton {
-    margin-top: 50px;
-    font-family: "Mali";
-    width: fit-content;
-    padding: 10px 18px;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
-    background: linear-gradient(180deg, #00c6fb 0%, #005bea 100%);
-    backdrop-filter: blur(4px);
-    border-radius: 6px;
-    cursor: pointer;
   }
 }

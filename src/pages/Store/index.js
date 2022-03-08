@@ -1,46 +1,109 @@
-import { Box } from "@mui/system";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { error } from "src/slices/MessagesSlice";
-import Grid from "@mui/material/Grid";
-import styles from "./index.module.scss";
-import image from "../../assets/images/store-image.png";
+import React, { useEffect, useState } from 'react';
+import cn from 'classnames/bind';
+import styles from './index.module.scss';
+import MainLayout from 'src/components/MainLayout';
+import Filter from './Filter/Filter';
+import { InputAdornment, TextField, Input } from '@mui/material';
+import searchIcon from "../../assets/icons/search_24px.svg";
+import { styled } from "@mui/material/styles";
+import { Search as SearchIcon } from "@material-ui/icons";
+import { Menu, Dropdown, Row, Col, Pagination } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import NFTItem from './NFTItem/NFTItem';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-const Home = () => {
-  //   const dispatch = useDispatch();
-  //   useEffect(() => {
-  //     dispatch(error("Wrong network, please switch to mainnet"));
-  //   }, []);
+const cx = cn.bind(styles);
 
-  return (
-    <div className={styles.container}>
-      <Grid container spacing={2} className={styles.grid}>
-        <Grid item xs={12} md={6}>
-          <img src={image} alt="Image" className={styles.image} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <h1 className={styles.name}>Rockie</h1>
-          <p className={styles.textTag}>
-            <span className={styles.tagName}>Price:</span> <span className={styles.tagContent}>1000 KWT</span>
-          </p>
-          <p className={styles.textTag}>
-            <span className={styles.tagName}>Description:</span>
-            <span className={styles.tagContent}>
-              Always full of energy unless it's hungry, healthy Rockie would hop everywhere as a way to exercise. Its
-              dream is to become a rockstar with a perfect body, and only accepts Eboneys and Silvereys as its diet
-              food. A well-cared Rockie can occasionally lay eggs that can be converted into stone.
-            </span>
-          </p>
-          <p className={styles.textTag}>
-            <span className={styles.tagName}>Store:</span>
-            <span className={styles.tagContent}>Kawaii Island</span>
-          </p>
+const mockData = [1, 2, 3, 4, 5, 6];
 
-          <div className={styles.orderButton}>Place order</div>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};
+const Store = () => {
+	const navigate = useNavigate();
 
-export default Home;
+	const menu = (
+		<Menu>
+			<Menu.Item>
+				<div>
+					1st menu item
+				</div>
+			</Menu.Item>
+		</Menu>
+	);
+
+	const itemRender = (current, type, originalElement) => {
+		if (type === 'prev') {
+			return <span style={{ color: '#FFFFFF' }}>Prev</span>;
+		}
+		if (type === 'next') {
+			return <span style={{ color: '#FFFFFF' }}>Next</span>;
+		}
+		return originalElement;
+	}
+
+	return (
+		<MainLayout>
+			<div className={cx("store")}>
+				<div className={cx("left")}>
+					<Filter />
+				</div>
+				<div className={cx("right")}>
+					<div className={cx("right-top")}>
+						<div className={cx("right-top-title")}>2000 items</div>
+						<div className={cx("group-search")}>
+							<Input
+								disableUnderline
+								placeholder="Search for NFT"
+								className={cx("search")}
+								// value={searchInput}
+								// onChange={(e) => {
+								// 	setSearchInput(e.target.value);
+								// }}
+								// onKeyDown={(e) => {
+								// 	if (e.key === "Enter" || e.keyCode === 13) {
+								// 		setShowModalSearch(false);
+								// 		return filterInput();
+								// 	}
+								// }}
+								endAdornment={
+									<InputAdornment position="end">
+										<SearchIcon className={cx("icon")} />
+									</InputAdornment>
+								}
+							/>
+							<Dropdown overlay={menu} className={cx("drop-down")}>
+								<div className={cx("drop-down-label")}>
+									<span>Hover me</span> <DownOutlined />
+								</div>
+							</Dropdown>
+						</div>
+					</div>
+
+					<div className={cx("right-main")}>
+						<Row gutter={[20, 20]}>
+							{mockData.map((item, index) => (
+								<Col md={8} key={index}>
+									<NFTItem
+										onClick={() => navigate(`/store/1`)}
+									/>
+								</Col>
+							))}
+						</Row>
+					</div>
+
+					<div className={cx("pagination")}>
+						<Pagination
+							showSizeChanger={false}
+							defaultCurrent={1}
+							total={500}
+							itemRender={itemRender}
+						/>
+					</div>
+
+				</div>
+			</div>
+			<Outlet />
+		</MainLayout>
+	)
+}
+
+export default Store;
+

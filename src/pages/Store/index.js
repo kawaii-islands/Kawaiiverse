@@ -11,6 +11,8 @@ import { Menu, Dropdown, Row, Col, Pagination } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import NFTItem from './NFTItem/NFTItem';
 import { Outlet, useNavigate } from 'react-router-dom';
+import filter from '../../assets/icons/filter.svg';
+import FilterMobile from './FilterMobile/FilterMobile';
 
 const cx = cn.bind(styles);
 
@@ -18,6 +20,7 @@ const mockData = [1, 2, 3, 4, 5, 6];
 
 const Store = () => {
 	const navigate = useNavigate();
+	const [openFilterModal, setOpenFilterModal] = useState(false);
 
 	const menu = (
 		<Menu>
@@ -69,18 +72,27 @@ const Store = () => {
 									</InputAdornment>
 								}
 							/>
-							<Dropdown overlay={menu} className={cx("drop-down")}>
-								<div className={cx("drop-down-label")}>
-									<span>Hover me</span> <DownOutlined />
+							<div className={cx("group-button")}>
+								<Dropdown overlay={menu} className={cx("drop-down")}>
+									<div className={cx("drop-down-label")}>
+										<span>Sort by</span> <DownOutlined />
+									</div>
+								</Dropdown>
+								<div
+									className={cx("button-filter")}
+									onClick={() => setOpenFilterModal(!openFilterModal)}
+								>
+									<img src={filter} alt="filter" />
+									<span style={{ paddingLeft: '8px' }}>Filter</span>
 								</div>
-							</Dropdown>
+							</div>
 						</div>
 					</div>
 
 					<div className={cx("right-main")}>
 						<Row gutter={[20, 20]}>
 							{mockData.map((item, index) => (
-								<Col md={8} key={index}>
+								<Col xs={24} sm={12} md={8} key={index}>
 									<NFTItem
 										onClick={() => navigate(`/store/1`)}
 									/>
@@ -97,8 +109,8 @@ const Store = () => {
 							itemRender={itemRender}
 						/>
 					</div>
-
 				</div>
+				{openFilterModal && <FilterMobile setOpenFilterModal={setOpenFilterModal} />}
 			</div>
 			<Outlet />
 		</MainLayout>

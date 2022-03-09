@@ -1,22 +1,31 @@
 .filter {
-  background: #162f54;
-  border-radius: 12px;
-  padding: 60px 20px;
-  height: 100%;
+  background: #1d355c;
+  padding: 30px 20px;
+  position: absolute;
+  top: 70px;
+  right: 0;
+  height: 100vh;
+  width: 80vw;
+  z-index: 9;
+  opacity: 1;
+  backdrop-filter: blur(2px);
+  animation-name: open_modal;
+  transform-origin: top;
+  animation-duration: 1s;
+  transition: all 1s ease-in-out;
 
-//   animation-name: example;
-//   transform-origin: top;
-//   animation-duration: 1s;
-//   transition: all 1s ease-in-out;
+  @keyframes open_modal {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 80vw;
+    }
+  }
 
-//   @keyframes example {
-//     0% {
-//       width: 0;
-//     }
-//     100% {
-//       height: 100vh;
-//     }
-//   }
+  .close-modal {
+	  font-size: 18px;
+  }
 
   .card-header {
     display: flex;
@@ -31,7 +40,7 @@
   }
 
   .collapse {
-    margin-top: 72px;
+    margin-top: 40px;
 
     .panel-content {
       font-weight: 600;

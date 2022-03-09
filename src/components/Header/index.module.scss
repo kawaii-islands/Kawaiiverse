@@ -16,8 +16,7 @@ $break-point-2: 1180px;
     justify-content: space-between;
 
     @media (max-width: $break-point-2) {
-      max-width: 100%;
-      padding: 0px 60px;
+      max-width: 940px;
     }
 
     @media (max-width: $break-point-1) {

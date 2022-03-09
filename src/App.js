@@ -14,6 +14,7 @@ import Store from "./pages/Store";
 import Messages from "./components/Messages";
 import NFTDetail from "./pages/NFTDetail";
 import 'antd/dist/antd.css';
+import LoadingPage from "./components/LoadingPage/LoadingPage";
 
 function App() {
 	const context = useWeb3React();
@@ -39,6 +40,7 @@ function App() {
 							<Route index element={<Store />} />
 							<Route path=":id" element={<NFTDetail />} />
 						</Route>
+						<Route path="loading" element={<LoadingPage />} />
 					</Routes>
 				</Router>
 			</ThemeProvider>

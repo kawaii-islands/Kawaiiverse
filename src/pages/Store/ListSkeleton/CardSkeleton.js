@@ -7,7 +7,7 @@ const cx = cn.bind(styles);
 
 const CardSkeleton = () => {
   return (
-      <SkeletonTheme baseColor="#5294e0" highlightColor="#75aae6" duration={2}>
+      <SkeletonTheme baseColor="#0f488a" highlightColor="#2e5e94" duration={2}>
         <Col xs={24} sm={12} md={8}>
           <section className={cx("skeleton")}>
             <Skeleton width={"100%"} height={270} />

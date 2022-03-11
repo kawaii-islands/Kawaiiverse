@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames/bind';
 import styles from './FilterMobile.module.scss';
-import filter from '../../../assets/icons/filter.svg';
+import filter from '../../assets/icons/filter.svg';
 import { Collapse } from 'antd';
-import logoKawaii from '../../../assets/images/logo_kawaii.png';
+import logoKawaii from '../../assets/images/logo_kawaii.png';
 
 const { Panel } = Collapse;
 const cx = cn.bind(styles);

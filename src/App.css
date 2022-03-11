@@ -46,16 +46,16 @@
 }
 
 @font-face {
-    font-family: "Mali-Regular";
-    src: local("Mali-Regular"), url(./assets/fonts/Mali-Regular.ttf) format("truetype");
+  font-family: "Mali-Regular";
+  src: local("Mali-Regular"), url(./assets/fonts/Mali-Regular.ttf) format("truetype");
 }
 @font-face {
-    font-family: "Mali-Medium";
-    src: local("Mali-Medium"), url(./assets/fonts/Mali-Medium.ttf) format("truetype");
+  font-family: "Mali-Medium";
+  src: local("Mali-Medium"), url(./assets/fonts/Mali-Medium.ttf) format("truetype");
 }
 @font-face {
-    font-family: "Mali-SemiBold";
-    src: local("Mali-SemiBold"), url(./assets/fonts/Mali-SemiBold.ttf) format("truetype");
+  font-family: "Mali-SemiBold";
+  src: local("Mali-SemiBold"), url(./assets/fonts/Mali-SemiBold.ttf) format("truetype");
 }
 
 html,
@@ -65,6 +65,12 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 [data-theme="compact"] .site-collapse-custom-collapse .site-collapse-custom-panel,
@@ -90,29 +96,34 @@ body,
 	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   } */
 
-  .ant-collapse-borderless > .ant-collapse-item:last-child, .ant-collapse-borderless > .ant-collapse-item:last-child .ant-collapse-header {
-	  border-radius: 8px !important;
-  }
+.ant-collapse-borderless > .ant-collapse-item:last-child,
+.ant-collapse-borderless > .ant-collapse-item:last-child .ant-collapse-header {
+  border-radius: 8px !important;
+}
 
-  .ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-prev .ant-pagination-item-link,
 .ant-pagination-next .ant-pagination-item-link {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   border-radius: 50% !important;
 }
 
 .ant-pagination-item {
-	background: #152D4E !important;
-  color: #FFFFFF !important;
+  background: #152d4e !important;
+  color: #ffffff !important;
   border-radius: 50% !important;
 }
 
 .ant-pagination-item a {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
 .ant-pagination-item-active {
-	background: #314C72 !important;
+  background: #314c72 !important;
   border-radius: 50% !important;
   border: none !important;
   /* overflow: hidden; */
 }
+
+/* input:focus{
+    outline: none !important;
+} */

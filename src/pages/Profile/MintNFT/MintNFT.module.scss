@@ -1,0 +1,30 @@
+.mint-nft {
+  .table {
+    font-size: 14px;
+    line-height: 150%;
+
+    &-header {
+      padding: 10px 0px;
+      background: #f3f7fa;
+      border-radius: 4px;
+      color: #181818;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    &-row {
+      padding: 12px 0px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #a4d9ea;
+      box-sizing: border-box;
+      backdrop-filter: blur(50px);
+      border-radius: 4px;
+      margin-bottom: 5px;
+      align-items: center;
+
+      .preview {
+        color: #2cd7ff;
+      }
+    }
+  }
+}

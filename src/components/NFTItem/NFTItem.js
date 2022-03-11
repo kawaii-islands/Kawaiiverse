@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames/bind';
 import styles from './NFTItem.module.scss';
-import logoKawaii from '../../../assets/images/logo_kawaii.png';
+import logoKawaii from '../../assets/images/logo_kawaii.png';
 
 const cx = cn.bind(styles);
 

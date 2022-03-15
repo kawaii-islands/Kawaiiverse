@@ -1,14 +1,34 @@
 import React, { useState } from 'react';
 import styles from './TableAddAttribute.module.scss';
 import cn from 'classnames/bind';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import uploadImageIcon from 'src/assets/icons/uploadImage_color.svg';
+import { create } from 'ipfs-http-client';
 
 const cx = cn.bind(styles);
+const client = create('https://ipfs.infura.io:5001/api/v0');
 
 const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute, deleteAttribute }) => {
-	const [imageAttribute, setImageAttribute] = useState();
+	const [loadingUploadAttributeImg, setLoadingUploadAttributeImg] = useState(false);
+
+	const handleUploadAttributeImage = async (e, idx) => {
+		console.log('idx :>> ', idx);
+
+		setLoadingUploadAttributeImg(true);
+		const file = e.target.files[0];
+
+		try {
+			const added = await client.add(file);
+			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
+			setDetailAttribute("image", url, idx);
+			setLoadingUploadAttributeImg(false);
+		} catch (error) {
+			console.log('Error uploading file: ', error)
+		}
+	}
+
 	return (
 		<div className={cx("table")}>
 			<Row className={cx("header")}>
@@ -29,12 +49,18 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 						/>
 					</Col>
 					<Col xs={7} className={cx("data-cell")}>
-						<input
-							value={item?.image}
-							placeholder='String'
-							className={cx("input")}
-							onChange={(e) => setDetailAttribute("image", e.target.value, idx)}
-						/>
+						{loadingUploadAttributeImg ? <Spin style={{ marginLeft: '10px' }} /> : (
+							<input
+								value={item?.image}
+								placeholder='String'
+								className={cx("input")}
+								onChange={(e) => {
+									console.log('idx 2:>> ', idx);
+									setDetailAttribute("image", e.target.value, idx)
+								}}
+							/>
+						)}
+
 						<span className={cx("image-upload")}>
 							<label htmlFor="file-input-attribute">
 								<img src={uploadImageIcon} alt="upload-img" className={cx("upload-img-icon")} />
@@ -43,7 +69,10 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 								id="file-input-attribute"
 								type="file"
 								accept="image/*"
-								onChange={(e) => setDetailAttribute("image", e.target.value.split('\\').pop(), idx)}
+								onChange={(e) => {
+									console.log('idx 1 :>> ', idx);
+									handleUploadAttributeImage(e, idx)
+								}}
 							/>
 						</span>
 					</Col>

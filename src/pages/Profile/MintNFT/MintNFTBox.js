@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './MintNFTBox.module.scss';
 import cn from 'classnames/bind';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import subtractIcon from 'src/assets/icons/subtract.svg';
 import uploadImageIcon from 'src/assets/icons/uploadImage.svg';
@@ -9,6 +9,7 @@ import plusCircleIcon from 'src/assets/icons/plus_circle.svg';
 import TableAddAttribute from './TableAddAttribute';
 import inforIcon from 'src/assets/icons/InforIcon.svg';
 import { Button } from '@mui/material';
+import { create } from 'ipfs-http-client';
 
 const cx = cn.bind(styles);
 
@@ -42,7 +43,9 @@ let oneAttribute = {
 	"type": "",
 	"value": "",
 	"image": "",
-}
+};
+
+const client = create('https://ipfs.infura.io:5001/api/v0');
 
 const MintNFTBox = ({
 	setOpenMintNFTBox,
@@ -55,6 +58,7 @@ const MintNFTBox = ({
 }) => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
+	const [loadingUploadImg, setLoadingUploadImg] = useState(false);
 	const [listAttribute, setListAttribute] = useState([data.attributes]);
 
 	useEffect(() => {
@@ -67,9 +71,24 @@ const MintNFTBox = ({
 	const setDetailAttribute = (key, value, index) => {
 		let listAttributeCopy = [...listAttribute];
 		listAttributeCopy[index] = { ...listAttributeCopy[index], [key]: value };
-
+		
 		setListAttribute(listAttributeCopy);
-		console.log('listAttri :>> ', listAttributeCopy);
+		console.log('listAttributeCopy :>> ', listAttributeCopy);
+	}
+
+	const handleUploadImage = async (e) => {
+		setLoadingUploadImg(true);
+		const file = e.target.files[0];
+
+		try {
+			const added = await client.add(file);
+			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
+			setStateForNftData("imageUrl", url);
+			setLoadingUploadImg(false);
+		} catch (error) {
+			console.log('Error uploading file: ', error)
+		}
 	}
 
 	return (
@@ -166,12 +185,14 @@ const MintNFTBox = ({
 					</Col>
 					<Col md={7} className={cx("one-field")}>
 						<div className={cx("title")}>Upload image: </div>
-						<input
-							value={data.imageUrl}
-							placeholder="image url"
-							className={cx("input")}
-							onChange={(e) => setStateForNftData("imageUrl", e.target.value)}
-						/>
+						{loadingUploadImg ? <Spin style={{ marginLeft: '10px' }} /> : (
+							<input
+								value={data.imageUrl}
+								placeholder="image url"
+								className={cx("input")}
+								onChange={(e) => setStateForNftData("imageUrl", e.target.value)}
+							/>
+						)}
 					</Col>
 					<Col md={2} className={cx("one-field")}>
 						<div className={cx("title")}>or: </div>
@@ -184,7 +205,8 @@ const MintNFTBox = ({
 								id="file-input"
 								type="file"
 								accept="image/*"
-								onChange={(e) => setStateForNftData("imageUrl", e.target.value.split('\\').pop())}
+								onChange={(e) => handleUploadImage(e)}
+							// onChange={(e) => setStateForNftData("imageUrl", e.target.value.split('\\').pop())}
 							/>
 						</div>
 					</Col>

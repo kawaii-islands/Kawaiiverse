@@ -8,68 +8,119 @@ import uploadImageIcon from 'src/assets/icons/uploadImage.svg';
 import plusCircleIcon from 'src/assets/icons/plus_circle.svg';
 import TableAddAttribute from './TableAddAttribute';
 import inforIcon from 'src/assets/icons/InforIcon.svg';
-import { Button, IconButton, Input } from '@mui/material';
+import { Button } from '@mui/material';
 
 const cx = cn.bind(styles);
 
-const mockData = [1, 2, 3, 4, 5, 6];
+let oneNft = {
+	"type": "",
+	"tokenId": 0,
+	"author": "",
+	"name": "",
+	"description": "",
+	"uri": "",
+	"mimeType": "",
+	"imageUrl": "",
+	"imageThumbnailUrl": "",
+	"imagePreviewUrl": "",
+	"tags": [
+		""
+	],
+	"attributes": [
+		{
+			"type": "",
+			"value": "",
+			"image": "",
+		}
+	],
+	"rarity": "",
+	"supply": 0,
+	"category": "",
+};
 
-const MintNFTBox = ({ setOpenMintNFTBox }) => {
+let oneAttribute = {
+	"type": "",
+	"value": "",
+	"image": "",
+}
+
+const MintNFTBox = ({
+	setOpenMintNFTBox,
+	setStateForNftData,
+	data,
+	listNft,
+	setListNft,
+	openMintNFTBox
+
+}) => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
-	const [nftImageUrl, setNftImageUrl] = useState("string");
-	const [imageName, setImageName] = useState();
-	const [listAttribute, setListAttribute] = useState(['1']);
+	const [listAttribute, setListAttribute] = useState([data.attributes]);
 
 	useEffect(() => {
+		setListAttribute(data.attributes);
 		setTimeout(() => {
 			setLoading(false);
 		}, 1500);
 	}, []);
+
+	const setDetailAttribute = (key, value, index) => {
+		let listAttributeCopy = [...listAttribute];
+		listAttributeCopy[index] = { ...listAttributeCopy[index], [key]: value };
+
+		setListAttribute(listAttributeCopy);
+		console.log('listAttri :>> ', listAttributeCopy);
+	}
 
 	return (
 		<div className={cx("mintNFT-box")}>
 			<Row className={cx("first-row")}>
 				<Col span={3} style={{ textAlign: 'center' }}>
 					<input
-						value={nftImageUrl}
+						value={data.imageUrl}
+						placeholder="Image url"
 						className={cx("input-1")}
-						onChange={(e) => setNftImageUrl(e.target.value)}
+						onChange={(e) => setStateForNftData("imageUrl", e.target.value)}
 					/>
 				</Col>
 				<Col span={4}>
 					<input
-						value={nftImageUrl}
+						placeholder="Name"
+						value={data.name}
 						className={cx("input")}
-						onChange={(e) => setNftImageUrl(e.target.value)}
+						onChange={(e) => setStateForNftData("name", e.target.value)}
 					/>
 				</Col>
 				<Col span={4}>
 					<input
-						value={nftImageUrl}
+						placeholder="Token ID"
+						value={data.tokenId}
 						className={cx("input")}
-						onChange={(e) => setNftImageUrl(e.target.value)}
+						onChange={(e) => setStateForNftData("tokenId", e.target.value)}
 					/>
 				</Col>
 				<Col span={4}>
 					<input
-						value={nftImageUrl}
+						placeholder="Supply"
+						value={data.supply}
 						className={cx("input")}
-						onChange={(e) => setNftImageUrl(e.target.value)}
+						onChange={(e) => setStateForNftData("supply", e.target.value)}
 					/>
 				</Col>
 				<Col span={4}>
 					<input
-						value={nftImageUrl}
+						placeholder="Category"
+						value={data.category}
 						className={cx("input")}
-						onChange={(e) => setNftImageUrl(e.target.value)}
+						onChange={(e) => setStateForNftData("category", e.target.value)}
 					/>
 				</Col>
 				<Col span={4} className={cx("preview")}>
 					<input
-						value={nftImageUrl}
+						placeholder="https://abc"
+						value={data.imagePreviewUrl}
 						className={cx("input")}
-						onChange={(e) => setNftImageUrl(e.target.value)}
+						onChange={(e) => setStateForNftData("imagePreviewUrl", e.target.value)}
 					/>
 				</Col>
 				<Col
@@ -89,34 +140,37 @@ const MintNFTBox = ({ setOpenMintNFTBox }) => {
 					<Col md={5} className={cx("one-field")}>
 						<div className={cx("title")}>Author: </div>
 						<input
-							value={nftImageUrl}
+							placeholder="String"
+							value={data.author}
 							className={cx("input")}
-							onChange={(e) => setNftImageUrl(e.target.value)}
+							onChange={(e) => setStateForNftData("author", e.target.value)}
 						/>
 					</Col>
 					<Col md={5} className={cx("one-field")}>
 						<div className={cx("title")}>URL: </div>
 						<input
-							value={nftImageUrl}
+							placeholder="String"
+							value={data.uri}
 							className={cx("input")}
-							onChange={(e) => setNftImageUrl(e.target.value)}
+							onChange={(e) => setStateForNftData("uri", e.target.value)}
 						/>
 					</Col>
 					<Col md={5} className={cx("one-field")}>
 						<div className={cx("title")}>Rarity: </div>
 						<input
-							value={nftImageUrl}
+							placeholder="String"
+							value={data.rarity}
 							className={cx("input")}
-							onChange={(e) => setNftImageUrl(e.target.value)}
+							onChange={(e) => setStateForNftData("rarity", e.target.value)}
 						/>
 					</Col>
 					<Col md={7} className={cx("one-field")}>
 						<div className={cx("title")}>Upload image: </div>
 						<input
-							value={imageName}
+							value={data.imageUrl}
 							placeholder="image url"
 							className={cx("input")}
-							onChange={(e) => setNftImageUrl(e.target.value)}
+							onChange={(e) => setStateForNftData("imageUrl", e.target.value)}
 						/>
 					</Col>
 					<Col md={2} className={cx("one-field")}>
@@ -126,10 +180,11 @@ const MintNFTBox = ({ setOpenMintNFTBox }) => {
 								<img src={uploadImageIcon} alt="upload-img" className={cx("upload-img-icon")} />
 							</label>
 							<input
+								placeholder="String"
 								id="file-input"
 								type="file"
 								accept="image/*"
-								onChange={(e) => setImageName(e.target.value.split('\\').pop())}
+								onChange={(e) => setStateForNftData("imageUrl", e.target.value.split('\\').pop())}
 							/>
 						</div>
 					</Col>
@@ -139,9 +194,10 @@ const MintNFTBox = ({ setOpenMintNFTBox }) => {
 					<Col span={24} className={cx("one-field")} style={{ alignItems: 'baseline' }}>
 						<div className={cx("title")}>Description: </div>
 						<textarea
-							value={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel massa est. Nulla facilisi. Suspendisse euismod enim nec ipsum bibendum, ultricies rutrum nisl tincidunt.`}
+							placeholder={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel massa est. Nulla facilisi. Suspendisse euismod enim nec ipsum bibendum, ultricies rutrum nisl tincidunt.`}
 							className={cx("input")}
-							onChange={(e) => setNftImageUrl(e.target.value)}
+							value={data.description}
+							onChange={(e) => setStateForNftData("description", e.target.value)}
 							style={{ width: '100%' }}
 							rows={2}
 						/>
@@ -156,13 +212,17 @@ const MintNFTBox = ({ setOpenMintNFTBox }) => {
 								src={plusCircleIcon}
 								alt="upload-img"
 								style={{ cursor: 'pointer' }}
-								onClick={() => setListAttribute([...listAttribute, '1'])}
+								onClick={() => setListAttribute([...listAttribute, oneAttribute])}
 							/>
 						</div>
 						<div className={cx("table")}>
 							<TableAddAttribute
 								listAttribute={listAttribute}
 								setListAttribute={setListAttribute}
+								setDetailAttribute={setDetailAttribute}
+								deleteAttribute={() => setStateForNftData("attributes",
+									listAttribute.slice(0, listAttribute.length - 1))
+								}
 							/>
 						</div>
 					</Col>
@@ -175,8 +235,18 @@ const MintNFTBox = ({ setOpenMintNFTBox }) => {
 					<span>You can double click to edit the information</span>
 				</div>
 				<div className={cx("right")}>
-					<Button className={cx("confirm")}>Confirm</Button>
-					<Button className={cx("delete")}>Delete</Button>
+					<Button
+						className={cx("confirm")}
+						onClick={() => {
+							setStateForNftData("attributes", listAttribute);
+							setOpenMintNFTBox(null);
+						}}
+					>Confirm</Button>
+
+					<Button
+						className={cx("delete")}
+						onClick={() => setListNft(listNft.slice(0, listNft.length - 1))}
+					>Delete</Button>
 				</div>
 			</div>
 		</div>

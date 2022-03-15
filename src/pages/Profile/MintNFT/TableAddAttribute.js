@@ -5,10 +5,9 @@ import { Col, Row } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import uploadImageIcon from 'src/assets/icons/uploadImage_color.svg';
 
-
 const cx = cn.bind(styles);
 
-const TableAddAttribute = ({ listAttribute, setListAttribute }) => {
+const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute, deleteAttribute }) => {
 	const [imageAttribute, setImageAttribute] = useState();
 	return (
 		<div className={cx("table")}>
@@ -24,14 +23,17 @@ const TableAddAttribute = ({ listAttribute, setListAttribute }) => {
 					<Col xs={7} className={cx("data-cell")}>
 						<input
 							placeholder='String'
+							value={item?.type}
 							className={cx("input")}
+							onChange={(e) => setDetailAttribute("type", e.target.value, idx)}
 						/>
 					</Col>
 					<Col xs={7} className={cx("data-cell")}>
 						<input
-							value={imageAttribute}
+							value={item?.image}
 							placeholder='String'
 							className={cx("input")}
+							onChange={(e) => setDetailAttribute("image", e.target.value, idx)}
 						/>
 						<span className={cx("image-upload")}>
 							<label htmlFor="file-input-attribute">
@@ -41,20 +43,25 @@ const TableAddAttribute = ({ listAttribute, setListAttribute }) => {
 								id="file-input-attribute"
 								type="file"
 								accept="image/*"
-								onChange={(e) => setImageAttribute(e.target.value.split('\\').pop())}
+								onChange={(e) => setDetailAttribute("image", e.target.value.split('\\').pop(), idx)}
 							/>
 						</span>
 					</Col>
 					<Col xs={7} className={cx("data-cell-last")}>
 						<input
 							placeholder='String'
+							value={item?.value}
 							className={cx("input")}
+							onChange={(e) => setDetailAttribute("value", e.target.value, idx)}
 						/>
 					</Col>
 					<Col xs={3} >
 						<DeleteOutlined
 							className={cx("delete-icon")}
-							onClick={() => setListAttribute(listAttribute.slice(0, listAttribute.length - 1))}
+							onClick={() => {
+								setListAttribute(listAttribute.slice(0, listAttribute.length - 1));
+								deleteAttribute()
+							}}
 						/>
 					</Col>
 				</Row>

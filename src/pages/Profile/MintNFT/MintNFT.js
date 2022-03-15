@@ -5,37 +5,47 @@ import { Col, Row } from 'antd';
 import plusIcon from 'src/assets/icons/plus.svg';
 import MintNFTBox from './MintNFTBox';
 import { Button } from '@mui/material';
+import { useWeb3React } from '@web3-react/core';
+import web3 from 'web3';
+import { splitSignature } from "@ethersproject/bytes";
+import axios from 'axios';
 
 const cx = cn.bind(styles);
+const KAWAII1155_ADDRESS = '0xD6eb653866F629e372151f6b5a12762D16E192f5';
+const URL = 'http://159.223.81.170:3000';
 
 const MintNFT = () => {
+	const { account, library } = useWeb3React();
 	const [loading, setLoading] = useState(true);
 	const [openMintNFTBox, setOpenMintNFTBox] = useState(0);
-	const [listNft, setListNft] = useState(['1', '2', '3']);
-	const [oneNft, setOneNft] = useState({
+
+	let oneNft = {
 		"type": "",
-		"tokenId": 1,
-		"author": "canhtuan",
-		"name": "String",
-		"description": "String",
-		"uri": "String",
-		"mimeType": "String",
-		"imageUrl": "String",
-		"imageThumbnailUrl": "String",
-		"imagePreviewUrl": "String",
+		"tokenId": 0,
+		"author": "",
+		"name": "string",
+		"description": "",
+		"uri": "",
+		"mimeType": "",
+		"imageUrl": "",
+		"imageThumbnailUrl": "",
+		"imagePreviewUrl": "http://abc",
 		"tags": [
-			"String"
+			""
 		],
 		"attributes": [
 			{
-				"type": "String",
-				"value": "String"
+				"type": "",
+				"value": "",
+				"image": "",
 			}
 		],
-		"rarity": "String",
-		"supply": 100,
-		"category": "String",
-	})
+		"rarity": "string",
+		"supply": 0,
+		"category": "string",
+	}
+
+	const [listNft, setListNft] = useState([oneNft]);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -43,12 +53,97 @@ const MintNFT = () => {
 		}, 1500);
 	}, []);
 
-	const submitListNFT = async () => {
+	const setStateForNftData = (key, value) => {
+		let listNftCopy = [...listNft];
+		listNftCopy[openMintNFTBox] = { ...listNftCopy[openMintNFTBox], [key]: value };
+
+		setListNft(listNftCopy);
+		console.log('listNft :>> ', listNft);
+	}
+
+	const sign = async (account, data, provider) => {
+		let res = await provider.send("eth_signTypedData_v4", [account, data]);
+		return res.result;
+	};
+
+	const getSignature = async () => {
+		let items = JSON.stringify(listNft);
+		items = Buffer.from(items, 'utf8').toString('hex');
+		let hashItems = web3.utils.sha3(items);
+
+		const EIP712Domain = [
+			{
+				"name": "domain",
+				"type": "string",
+			},
+			{
+				"name": "version",
+				"type": "string",
+			},
+			{
+				"name": "time",
+				"type": "uint256",
+			},
+		];
+
+		const domain = {
+			"domain": "http://kawaiiverse.io",
+			"version": "1",
+			"time": Date.now(),
+		};
+
+		const Data = [
+			{
+				"name": "nft1155",
+				"type": "address",
+			},
+			{
+				"name": "owner",
+				"type": "uint256",
+			},
+			{
+				"name": "hashData",
+				"type": "bytes32",
+			}
+		]
+
+		const message = {
+			nft1155: KAWAII1155_ADDRESS,
+			owner: account,
+			hashData: hashItems,
+		};
+
+		const data = JSON.stringify({
+			types: {
+				EIP712Domain,
+				Data,
+			},
+			domain,
+			primaryType: "Data",
+			message,
+		});
+
+		const signature = await sign(account, data, library.provider);
+		console.log("signature", signature);
+		return signature;
+	}
+
+	const submit = async () => {
+		const signature = await getSignature();
 		let bodyParams = {
-			"nft1155": "0xD6eb653866F629e372151f6b5a12762D16E192f5",
-			"owner": "0x3A93dA588954AcF4D0d8F1f1A4439Fa79D84Cf29",
-			"sign": "0xb089893bcce9375236b4c3932c8e8451cb463259bc863f26ca32824a0ded041d49a538e49d5dcbc3ce86764bab3d694f07a174ffda1dcab08911117cddad7d581c",
-			"data": [],
+			"nft1155": KAWAII1155_ADDRESS,
+			"owner": account,
+			"sign": signature,
+			"data": listNft,
+		}
+
+		try {
+			const res = await axios.post(`${URL}/v1/nft`, bodyParams);
+			if (res.status === 200) {
+				console.log(res);
+			}
+		} catch (err) {
+			console.log(err.response);
 		}
 	}
 
@@ -70,7 +165,11 @@ const MintNFT = () => {
 						(<MintNFTBox
 							key={index}
 							data={item}
+							setStateForNftData={setStateForNftData}
+							openMintNFTBox={openMintNFTBox}
 							setOpenMintNFTBox={setOpenMintNFTBox}
+							listNft={listNft}
+							setListNft={setListNft}
 						/>)
 						: (
 							<Row
@@ -80,19 +179,19 @@ const MintNFT = () => {
 							>
 								<Col span={3} style={{ textAlign: 'center' }}>
 									<img
-										src={`https://images.kawaii.global/kawaii-marketplace-image/category/${"Icon_Plant_Big"}.png`}
+										src={item?.imageUrl ? item?.imageUrl : `https://images.kawaii.global/kawaii-marketplace-image/category/${"Icon_Plant_Big"}.png`}
 										alt="nft-icon"
 										width={36}
 										height={36}
 									/>
 								</Col>
 								<Col span={4}>
-									string
+									{item?.name}
 								</Col>
-								<Col span={4}>string</Col>
-								<Col span={4}>string</Col>
-								<Col span={4}>string</Col>
-								<Col span={4} className={cx("preview")}>http://abc</Col>
+								<Col span={4}>{item?.tokenId}</Col>
+								<Col span={4}>{item?.supply}</Col>
+								<Col span={4}>{item?.category}</Col>
+								<Col span={4} className={cx("preview")}>{item?.preview}</Col>
 								<Col
 									span={1}
 									style={{ cursor: 'pointer' }}
@@ -107,11 +206,14 @@ const MintNFT = () => {
 				}
 
 				<div className={cx("group-button")}>
-					<Button className={cx("submit")}>Submit</Button>
+					<Button
+						className={cx("submit")}
+						onClick={submit}
+					>Submit</Button>
 					<Button
 						className={cx("create-nft")}
 						onClick={() => {
-							setListNft([...listNft, '1']);
+							setListNft([...listNft, oneNft]);
 							setOpenMintNFTBox(listNft.length);
 						}}
 					>

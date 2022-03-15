@@ -8,25 +8,26 @@ import { create } from 'ipfs-http-client';
 
 const cx = cn.bind(styles);
 const client = create('https://ipfs.infura.io:5001/api/v0');
-const URL = 'http://159.223.81.170:3000';
 
 const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute, deleteAttribute }) => {
 	const [loadingUploadAttributeImg, setLoadingUploadAttributeImg] = useState(false);
 
 	const handleUploadAttributeImage = async (e, idx) => {
 		console.log('idx :>> ', idx);
+
 		setLoadingUploadAttributeImg(true);
-		const file = e.target.files[0]
+		const file = e.target.files[0];
+
 		try {
 			const added = await client.add(file);
 			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
 			setDetailAttribute("image", url, idx);
 			setLoadingUploadAttributeImg(false);
 		} catch (error) {
 			console.log('Error uploading file: ', error)
 		}
 	}
-
 
 	return (
 		<div className={cx("table")}>

@@ -5,12 +5,17 @@ import logoKawaii from '../../assets/images/logo_kawaii.png';
 
 const cx = cn.bind(styles);
 
-const NFTItem = ({ onClick }) => {
+const NFTItem = ({ onClick, data }) => {
+
 	return (
 		<div className={cx("nft-item")} onClick={onClick}>
 			<div
 				className={cx("top")}
-				style={{ backgroundImage: `url(https://images.kawaii.global/kawaii-marketplace-image/category/${"Icon_Plant_Big"}.png)` }}
+				style={{
+					backgroundImage:
+						data?.imageUrl ? data.imageUrl
+							: `url(https://images.kawaii.global/kawaii-marketplace-image/category/${"Icon_Plant_Big"}.png)`
+				}}
 			>
 				<div className={cx("tag")}>
 					10/100 Left
@@ -22,7 +27,7 @@ const NFTItem = ({ onClick }) => {
 					<img src={logoKawaii} className={cx("name-avatar")} />
 					<span className={cx("name-text")}>Kawaii island</span>
 				</div>
-				<div className={cx("title")}>Greenoo</div>
+				<div className={cx("title")}>{data?.name || "Name"}</div>
 				<div className={cx("number-box")}>
 					<span className={cx("number")}>375 KWT</span>
 				</div>

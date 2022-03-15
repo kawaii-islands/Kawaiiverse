@@ -9,32 +9,42 @@ import axios from 'axios';
 
 const cx = cn.bind(styles);
 
-const mockData = [1, 2, 3, 4, 5, 6];
+const URL = 'http://159.223.81.170:3000';
 
 const ViewNFT = () => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
+	const [listNftByContract, setListNftByContract] = useState();
 
 	useEffect(() => {
-		setTimeout(() => {
-			setLoading(false);
-		}, 1500);
+		getListNftByContract();
 	}, []);
 
-	// const getListNftByContract = async () => {
-	// 	try {
-	// 		const res = axios.get()
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// }
+	const getListNftByContract = async () => {
+		setLoading(true);
+
+		try {
+			const res = await axios.get(`${URL}/v1/nft/0xD6eb653866F629e372151f6b5a12762D16E192f5`);
+
+			if (res.status === 200) {
+				setListNftByContract(res.data.data);
+				setLoading(false);
+			}
+
+		} catch (err) {
+			console.log(err);
+		}
+	}
 
 	return (
 		<div className={cx("view-nft")}>
 			<Row gutter={[20, 20]}>
-				{loading ? <ListSkeleton /> : mockData.map((item, index) => (
+				{loading ? <ListSkeleton /> : listNftByContract.map((item, index) => (
 					<Col xs={24} sm={12} md={8} key={index}>
-						<NFTItem onClick={() => navigate(`/store/1`)} />
+						<NFTItem
+							data={item}
+							onClick={() => navigate(`/store/1`)}
+						/>
 					</Col>
 				))}
 			</Row>

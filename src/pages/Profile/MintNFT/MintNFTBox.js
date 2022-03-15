@@ -71,16 +71,19 @@ const MintNFTBox = ({
 	const setDetailAttribute = (key, value, index) => {
 		let listAttributeCopy = [...listAttribute];
 		listAttributeCopy[index] = { ...listAttributeCopy[index], [key]: value };
+		
 		setListAttribute(listAttributeCopy);
 		console.log('listAttributeCopy :>> ', listAttributeCopy);
 	}
 
 	const handleUploadImage = async (e) => {
 		setLoadingUploadImg(true);
-		const file = e.target.files[0]
+		const file = e.target.files[0];
+
 		try {
 			const added = await client.add(file);
 			const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
 			setStateForNftData("imageUrl", url);
 			setLoadingUploadImg(false);
 		} catch (error) {

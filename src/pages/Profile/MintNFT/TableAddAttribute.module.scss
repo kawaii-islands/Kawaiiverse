@@ -1,3 +1,4 @@
+$break-point-1: 800px;
 .table {
   .header {
     display: flex;
@@ -17,7 +18,7 @@
 
   .data {
     align-items: center;
-
+    border-top: 1px solid rgba(109, 208, 231, 0.16);
     .delete-icon {
       cursor: pointer;
       padding: 7px;
@@ -37,9 +38,12 @@
 
     &-cell {
       border-right: 1px solid rgba(109, 208, 231, 0.16);
-      border-top: 1px solid rgba(109, 208, 231, 0.16);
+      // border-top: 1px solid rgba(109, 208, 231, 0.16);
       padding: 12px 20px;
-
+      @media(max-width: $break-point-1){
+        min-height: 56px;
+        padding: 6px 20px;
+      }
       .input {
         @extend .input;
         width: 80%;

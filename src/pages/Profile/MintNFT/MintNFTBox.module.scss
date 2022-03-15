@@ -1,3 +1,5 @@
+$break-point-1: 800px;
+$tablet: 768px;
 .mintNFT-box {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #a4d9ea;
@@ -32,14 +34,25 @@
     box-sizing: border-box;
     border-radius: 6px;
     margin: 16px 30px;
-
+    
     .row {
       align-items: center;
-
+      &-desc{
+        padding: 24px 0px;
+        @media(max-width: $tablet){
+          padding: 8px 0px;
+        }
+      }
+      .table-wrapper{
+        flex-direction: column;
+      }
       .one-field {
+        @media(max-width: $tablet){
+          margin-top: 4px;
+        }
         display: flex;
         align-items: center;
-
+        
         .title {
           font-weight: 400;
           font-size: 14px;
@@ -68,6 +81,16 @@
         .table {
           margin-left: 30px;
           width: 80%;
+          @media(max-width: 600px){
+            margin-left: 0px;
+            margin-top: 10px;
+            width: 100%;
+          }
+        }
+      }
+      .col-image{
+        @media(max-width: $break-point-1){
+          // flex-basis: 70%;
         }
       }
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { light } from "src/themes/light";
@@ -9,13 +9,13 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { useWeb3React } from "@web3-react/core";
 import { useEagerConnect, useInactiveListener } from "src/helpers/hooks";
-import Home from "./pages/Home";
-import Store from "./pages/Store";
 import Messages from "./components/Messages";
-import NFTDetail from "./pages/NFTDetail";
 import 'antd/dist/antd.css';
 import LoadingPage from "./components/LoadingPage/LoadingPage";
 import Profile from "./pages/Profile";
+const Home = React.lazy(() => import("src/pages/Home/index.js"));
+const Store = React.lazy(() => import("src/pages/Store/index.js"));
+const NFTDetail = React.lazy(() => import("src/pages/NFTDetail/index.js"));
 
 function App() {
 	const context = useWeb3React();
@@ -32,6 +32,7 @@ function App() {
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={light}>
+			<Suspense fallback={<h1>Loading</h1>}>
 				<CssBaseline />
 				<Messages />
 				<Router>
@@ -44,7 +45,9 @@ function App() {
 						<Route path="profile" element={<Profile />} />
 					</Routes>
 				</Router>
+				</Suspense>
 			</ThemeProvider>
+			
 		</Provider >
 	);
 }

@@ -5,6 +5,7 @@ import ListSkeleton from 'src/components/ListSkeleton/ListSkeleton';
 import NFTItem from 'src/components/NFTItem/NFTItem';
 import { Col, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const cx = cn.bind(styles);
 
@@ -19,6 +20,14 @@ const ViewNFT = () => {
 			setLoading(false);
 		}, 1500);
 	}, []);
+
+	// const getListNftByContract = async () => {
+	// 	try {
+	// 		const res = axios.get()
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// }
 
 	return (
 		<div className={cx("view-nft")}>

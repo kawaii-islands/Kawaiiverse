@@ -51,7 +51,10 @@ $mobile: 576px;
       @media(max-width: $break-point-1){
         min-height: 56px;
         padding: 6px 20px;
-        
+        text-align: center;
+        input{
+          text-align: center;
+        }
       }
       @media(max-width: $mobile){
         padding: 6px 8px;

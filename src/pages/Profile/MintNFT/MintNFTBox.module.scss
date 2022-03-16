@@ -48,7 +48,10 @@ $mobile: 576px;
         }
       }
       .table-wrapper{
+        @media(max-width: $break-point-1){
         flex-direction: column;
+
+        }
       }
       .one-field {
         @media(max-width: $tablet){
@@ -85,6 +88,10 @@ $mobile: 576px;
         .table {
           margin-left: 30px;
           width: 80%;
+          @media(max-width: $break-point-1){
+            width: 100%;
+            text-align: center;
+            }
           @media(max-width: 600px){
             margin-left: 0px;
             margin-top: 10px;

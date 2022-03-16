@@ -156,7 +156,7 @@ const MintNFTBox = ({
 
 			<div className={cx("main-box")}>
 				<Row className={cx("row")}>
-					<Col md={5} className={cx("one-field")}>
+					<Col lg={5} sm={10} md={10} className={cx("one-field")}>
 						<div className={cx("title")}>Author: </div>
 						<input
 							placeholder="String"
@@ -165,7 +165,7 @@ const MintNFTBox = ({
 							onChange={(e) => setStateForNftData("author", e.target.value)}
 						/>
 					</Col>
-					<Col md={5} className={cx("one-field")}>
+					<Col lg={5} sm={10} md={10} className={cx("one-field")}>
 						<div className={cx("title")}>URL: </div>
 						<input
 							placeholder="String"
@@ -174,7 +174,7 @@ const MintNFTBox = ({
 							onChange={(e) => setStateForNftData("uri", e.target.value)}
 						/>
 					</Col>
-					<Col md={5} className={cx("one-field")}>
+					<Col lg={5} sm={10} md={10} className={cx("one-field")}>
 						<div className={cx("title")}>Rarity: </div>
 						<input
 							placeholder="String"
@@ -183,7 +183,7 @@ const MintNFTBox = ({
 							onChange={(e) => setStateForNftData("rarity", e.target.value)}
 						/>
 					</Col>
-					<Col md={7} className={cx("one-field")}>
+					<Col lg={7} sm={18} md={10} xs={20} className={cx("one-field", "col-image")}>
 						<div className={cx("title")}>Upload image: </div>
 						{loadingUploadImg ? <Spin style={{ marginLeft: '10px' }} /> : (
 							<input
@@ -194,7 +194,7 @@ const MintNFTBox = ({
 							/>
 						)}
 					</Col>
-					<Col md={2} className={cx("one-field")}>
+					<Col lg={2} sm={4} md={2} xs={1} className={cx("one-field")}>
 						<div className={cx("title")}>or: </div>
 						<div className={cx("image-upload")}>
 							<label htmlFor="file-input">
@@ -212,7 +212,7 @@ const MintNFTBox = ({
 					</Col>
 				</Row>
 
-				<Row className={cx("row")} style={{ padding: '24px 0px' }}>
+				<Row className={cx("row", "row-desc")}>
 					<Col span={24} className={cx("one-field")} style={{ alignItems: 'baseline' }}>
 						<div className={cx("title")}>Description: </div>
 						<textarea
@@ -227,7 +227,7 @@ const MintNFTBox = ({
 				</Row>
 
 				<Row className={cx("row")}>
-					<Col span={24} className={cx("one-field")} style={{ alignItems: 'baseline' }}>
+					<Col span={24} className={cx("one-field", "table-wrapper")} style={{ alignItems: 'baseline' }}>
 						<div className={cx("title")}>
 							Attributes: &nbsp;
 							<img

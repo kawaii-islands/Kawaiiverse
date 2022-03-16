@@ -1,12 +1,10 @@
 import React, { CSSProperties } from 'react';
 import './LoadingPage.css';
 import loadingIcon from 'src/assets/icons/loading.png';
-import Header from '../Header';
 
 const LoadingPage = () => {
 	return (
 		<>
-			<Header />
 			<div className='loading-page'>
 				<img
 					src={loadingIcon}

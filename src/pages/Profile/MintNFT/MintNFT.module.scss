@@ -1,8 +1,12 @@
+$mobile: 576px;
 .mint-nft {
   .table {
     font-size: 14px;
     line-height: 150%;
-
+    @media(max-width: $mobile){
+      font-size: 13px;
+      text-align: center;
+    }
     &-header {
       padding: 10px 0px;
       background: #f3f7fa;

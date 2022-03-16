@@ -183,7 +183,7 @@ const MintNFTBox = ({
 							onChange={(e) => setStateForNftData("rarity", e.target.value)}
 						/>
 					</Col>
-					<Col lg={7} sm={10} md={10} className={cx("one-field", "col-image")}>
+					<Col lg={7} sm={18} md={10} xs={20} className={cx("one-field", "col-image")}>
 						<div className={cx("title")}>Upload image: </div>
 						{loadingUploadImg ? <Spin style={{ marginLeft: '10px' }} /> : (
 							<input
@@ -194,7 +194,7 @@ const MintNFTBox = ({
 							/>
 						)}
 					</Col>
-					<Col lg={2} sm={10} md={2} className={cx("one-field")}>
+					<Col lg={2} sm={4} md={2} xs={1} className={cx("one-field")}>
 						<div className={cx("title")}>or: </div>
 						<div className={cx("image-upload")}>
 							<label htmlFor="file-input">

@@ -37,7 +37,7 @@ const Profile = () => {
               <div className={cx("filter-mobile")}>
                 <Button 
                 onClick={() => setOpenFilterModal(!openFilterModal)}
-                className={cx("filter-mobile-btn")}>Filter</Button>
+                className={cx("filter-mobile-btn", openFilterModal && "filter-mobile-btn--active")}>Filter</Button>
               </div>
               <div className={cx("group-button")}>
                 <Button className={cx("button", !isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(false)}>

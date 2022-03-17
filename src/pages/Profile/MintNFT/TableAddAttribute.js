@@ -11,6 +11,7 @@ const client = create('https://ipfs.infura.io:5001/api/v0');
 
 const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute, deleteAttribute }) => {
 	const [loadingUploadAttributeImg, setLoadingUploadAttributeImg] = useState(false);
+	const [indexImg, setIndexImg] = useState(0);
 
 	const handleUploadAttributeImage = async (e, idx) => {
 		console.log('idx :>> ', idx);
@@ -49,7 +50,7 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 						/>
 					</Col>
 					<Col xs={7} className={cx("data-cell")}>
-						{loadingUploadAttributeImg ? <Spin style={{ marginLeft: '10px' }} /> : (
+						{(loadingUploadAttributeImg && indexImg === idx) ? <Spin style={{ marginLeft: '10px' }} /> : (
 							<input
 								value={item?.image}
 								placeholder='String'
@@ -62,15 +63,16 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 						)}
 
 						<span className={cx("image-upload")}>
-							<label htmlFor="file-input-attribute">
+							<label htmlFor={idx}>
 								<img src={uploadImageIcon} alt="upload-img" className={cx("upload-img-icon")} />
 							</label>
 							<input
-								id="file-input-attribute"
+								id={idx}
 								type="file"
 								accept="image/*"
 								onChange={(e) => {
 									console.log('idx 1 :>> ', idx);
+									setIndexImg(idx);
 									handleUploadAttributeImage(e, idx)
 								}}
 							/>

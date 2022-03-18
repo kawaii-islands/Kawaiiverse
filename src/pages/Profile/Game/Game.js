@@ -27,12 +27,9 @@ const Game = () => {
   const [gameInfo, setgameInfo] = useState(gameNft);
   const inputChangeHandler = (key, value) => {
     setgameInfo({ ...gameInfo, [key]: value });
-    console.log("listNft :>> ", gameInfo);
   };
 
   const createGame = async () => {
-    console.log(KAWAIIVERSE_NFT1155_ADDRESS);
-
     const _data = web3.eth.abi.encodeFunctionCall(
       {
         inputs: [

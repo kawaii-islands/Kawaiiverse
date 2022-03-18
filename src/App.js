@@ -14,9 +14,11 @@ import Header from "src/components/Header/index";
 import LoadingPage from "./components/LoadingPage/LoadingPage";
 import Profile from "./pages/Profile";
 import Messages from "./components/Messages";
+
 const Home = React.lazy(() => import("src/pages/Home/index.js"));
 const Store = React.lazy(() => import("src/pages/Store/index.js"));
 const NFTDetail = React.lazy(() => import("src/pages/NFTDetail/index.js"));
+// const ManageGame = React.lazy(() => import("src/pages/ManageGame/index.js"));
 
 function App() {
   const context = useWeb3React();
@@ -36,17 +38,20 @@ function App() {
         <CssBaseline />
         <Messages />
         <Router>
-		<Header />
-		<Suspense fallback={<LoadingPage />}>
-          <Routes>
+          <Header />
+          <Suspense fallback={<LoadingPage />}>
+            <Routes>
               <Route path="/" element={<Home />} />
               <Route path="store">
                 <Route index element={<Store />} />
                 <Route path=":id" element={<NFTDetail />} />
               </Route>
-              <Route path="profile" element={<Profile />} />
-          </Routes>
-		  </Suspense>
+              {/* <Route path="profile/manage-game" element={<ManageGame />} /> */}
+              <Route exact path="profile" element={<Profile />}>
+                {/* <Route path="manage-game" element={<ManageGame />} /> */}
+              </Route>
+            </Routes>
+          </Suspense>
         </Router>
       </ThemeProvider>
     </Provider>

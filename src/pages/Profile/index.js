@@ -9,19 +9,45 @@ import { Button } from "@mui/material";
 import ViewNFT from "./ViewNFT/ViewNFT";
 import MintNFT from "./MintNFT/MintNFT";
 import Game from "./Game/Game";
+import { read } from "src/services/web3";
+import { BSC_CHAIN_ID } from "src/consts/blockchain";
+import FACTORY_ABI from "src/utils/abi/factory.json";
+import NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
+import { useWeb3React } from "@web3-react/core";
+import { FACTORY_ADDRESS } from "src/consts/address";
+
 import FilterMobile from "src/components/FilterMobile/FilterMobile";
 const cx = cn.bind(styles);
 
 const Profile = () => {
+  const { account } = useWeb3React();
   const [loading, setLoading] = useState(true);
   const [isMintNFT, setIsMintNFT] = useState(true);
   const [isGameTab, setIsGameTab] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [gameList, setGameList] = useState([]);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
   }, []);
+
+  useEffect(() => {
+    logInfo();
+  }, [account]);
+
+  const logInfo = async () => {
+    if (account) {
+      console.log(BSC_CHAIN_ID);
+      const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
+      for (let index = 0; index < totalGame; index++) {
+        let gameAddress = await read("nftOfUser", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
+        let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
+        console.log(gameName);
+        setGameList(gameList => [...gameList, gameName]);
+      }
+    }
+  };
 
   return loading ? (
     <LoadingPage />
@@ -31,7 +57,7 @@ const Profile = () => {
         {openFilterModal && <FilterMobile setOpenFilterModal={setOpenFilterModal} />}
         <Row>
           <Col md={6} className={cx("left")}>
-            <Filter setIsGameTab={setIsGameTab} />
+            <Filter setIsGameTab={setIsGameTab} gameList={gameList} />
           </Col>
 
           <Col md={18} className={cx("right-wrapper")}>

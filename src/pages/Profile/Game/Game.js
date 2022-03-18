@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Game.module.scss";
 import cn from "classnames/bind";
-import { read, sign, createNetworkOrSwitch, write } from "src/services/web3";
-import { BSC_CHAIN_ID, BSC_rpcUrls, BSC_TESTNET_CHAIN_ID } from "src/consts/blockchain";
+import { read, createNetworkOrSwitch, write } from "src/services/web3";
+import { BSC_CHAIN_ID, BSC_rpcUrls } from "src/consts/blockchain";
 import { toast } from "react-toastify";
-import { Col, Row, Spin } from "antd";
+import { Col, Row } from "antd";
 import Web3 from "web3";
 import plusIcon from "src/assets/icons/plus.svg";
 import { useWeb3React } from "@web3-react/core";
 import trashIcon from "src/assets/icons/coolicon.svg";
 import { Button } from "@mui/material";
 import RELAY_ABI from "src/utils/abi/relay.json";
-import FACTORY_ABI from "src/utils/abi/factory.json";
-import NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
 import { RELAY_ADDRESS, KAWAIIVERSE_NFT1155_ADDRESS, FACTORY_ADDRESS } from "src/consts/address";
 
 const cx = cn.bind(styles);
@@ -20,18 +18,6 @@ const web3 = new Web3(BSC_rpcUrls);
 
 const Game = () => {
   const { account, chainId, library } = useWeb3React();
-
-  const logInfo = async () => {
-    const totalGame = await read("nftOfUserLength", BSC_TESTNET_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
-    for (let index = 0; index < totalGame; index++) {
-      let gameAddress = await read("nftOfUser", BSC_TESTNET_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
-
-      console.log(gameAddress);
-      let gameName = await read("name", BSC_TESTNET_CHAIN_ID, gameAddress, NFT1155_ABI, []);
-      console.log(gameName);
-    }
-    console.log(totalGame);
-  };
 
   let gameNft = {
     name: "AN BINH CHI",
@@ -80,13 +66,23 @@ const Game = () => {
     );
 
     try {
-      if (chainId !== BSC_TESTNET_CHAIN_ID) {
+      if (chainId !== BSC_CHAIN_ID) {
         const error = await createNetworkOrSwitch(library.provider);
         if (error) {
           throw new Error("Please change network to Testnet Binance smart chain.");
         }
       }
-      await write("execute", library.provider, RELAY_ADDRESS, RELAY_ABI, [FACTORY_ADDRESS, _data], { from: account });
+      await write(
+        "execute",
+        library.provider,
+        RELAY_ADDRESS,
+        RELAY_ABI,
+        [FACTORY_ADDRESS, _data],
+        { from: account },
+        hash => {
+          console.log(hash);
+        },
+      );
     } catch (error) {
       console.log(error);
       toast.error(error.message || "An error occurred!");
@@ -132,9 +128,7 @@ const Game = () => {
         <div className={cx("box-bottom")}>
           <div className={cx("left")}></div>
           <div className={cx("right")}>
-            <Button className={cx("confirm")} onClick={() => logInfo()}>
-              Confirm
-            </Button>
+            <Button className={cx("confirm")}>Confirm</Button>
           </div>
         </div>
       </div>

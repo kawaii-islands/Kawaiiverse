@@ -9,7 +9,7 @@ import { ConsoleSqlOutlined } from "@ant-design/icons";
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
-const Filter = ({ setIsGameTab }) => {
+const Filter = ({ setIsGameTab, gameList }) => {
   return (
     <div className={cx("filter")}>
       <div className={cx("card-header")}>
@@ -22,7 +22,6 @@ const Filter = ({ setIsGameTab }) => {
           expandIconPosition="right"
           bordered={false}
           className="site-collapse-custom-collapse"
-          // onChange={() => console.log("Hello")}
         >
           <Panel header="Store" key="1" className="site-collapse-custom-panel">
             <div className={cx("panel-content")}>
@@ -37,16 +36,20 @@ const Filter = ({ setIsGameTab }) => {
             </div>
           </Panel>
           <Panel header="Game" key="2" className="site-collapse-custom-panel">
-            {/* <div className={cx("panel-content")}>{"text"}</div> */}
+            {console.log(gameList)}
+            <div className={cx("panel-content")}>
+              {gameList.map((gameName, idx) => (
+                <div className={cx("name")}>
+                  <img src={logoKawaii} className={cx("name-avatar")} />
+                  <span className={cx("name-text")}>{gameName}</span>
+                </div>
+              ))}
+            </div>
           </Panel>
 
           <div className="site-collapse-custom-panel" onClick={() => setIsGameTab(true)}>
-            Game
+            <div className={cx("panel-content-game")}>Create Game</div>
           </div>
-
-          <Panel header="Amount" key="3" className="site-collapse-custom-panel">
-            <div className={cx("panel-content")}>{"text"}</div>
-          </Panel>
         </Collapse>
       </div>
     </div>

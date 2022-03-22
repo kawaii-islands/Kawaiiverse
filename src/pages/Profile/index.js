@@ -20,78 +20,87 @@ import FilterMobile from "src/components/FilterMobile/FilterMobile";
 const cx = cn.bind(styles);
 
 const Profile = () => {
-  const { account } = useWeb3React();
-  const [loading, setLoading] = useState(true);
-  const [isMintNFT, setIsMintNFT] = useState(true);
-  const [isGameTab, setIsGameTab] = useState(false);
-  const [openFilterModal, setOpenFilterModal] = useState(false);
-  const [gameList, setGameList] = useState([]);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
+	const { account } = useWeb3React();
+	const [loading, setLoading] = useState(true);
+	const [isMintNFT, setIsMintNFT] = useState(true);
+	const [isGameTab, setIsGameTab] = useState(false);
+	const [openFilterModal, setOpenFilterModal] = useState(false);
+	const [gameList, setGameList] = useState([]);
 
-  useEffect(() => {
-    logInfo();
-  }, [account]);
+	useEffect(() => {
+		setTimeout(() => {
+			setLoading(false);
+		}, 1500);
+	}, []);
 
-  const logInfo = async () => {
-    if (account) {
-      const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
-      for (let index = 0; index < totalGame; index++) {
-        let gameAddress = await read("nftOfUser", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
-        let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
-        setGameList(gameList => [...gameList, gameName]);
-      }
-    }
-  };
+	useEffect(() => {
+		logInfo();
+	}, [account]);
 
-  return loading ? (
-    <LoadingPage />
-  ) : (
-    <MainLayout>
-      <div className={cx("profile")}>
-        {openFilterModal && (
-          <FilterMobile setOpenFilterModal={setOpenFilterModal} setIsGameTab={setIsGameTab} gameList={gameList} />
-        )}
-        <Row>
-          <Col md={6} className={cx("left")}>
-            <Filter setIsGameTab={setIsGameTab} gameList={gameList} />
-          </Col>
+	const logInfo = async () => {
+		if (account) {
+			const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
+			for (let index = 0; index < totalGame; index++) {
+				let gameAddress = await read("nftOfUser", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
+				let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
+				setGameList(gameList => [...gameList, gameName]);
+			}
+		}
+	};
 
-          <Col md={18} className={cx("right-wrapper")}>
-            {isGameTab ? (
-              <div className={cx("right")}>
-                <p>Hello</p>
-                <Game />
-              </div>
-            ) : (
-              <div className={cx("right")}>
-                <div className={cx("filter-mobile")}>
-                  <Button
-                    onClick={() => setOpenFilterModal(!openFilterModal)}
-                    className={cx("filter-mobile-btn", openFilterModal && "filter-mobile-btn--active")}
-                  >
-                    Filter
-                  </Button>
-                </div>
-                <div className={cx("group-button")}>
-                  <Button className={cx("button", !isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(false)}>
-                    View NFT
-                  </Button>
-                  <Button className={cx("button", isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(true)}>
-                    Mint NFT
-                  </Button>
-                </div>
-                <div className={cx("content")}>{isMintNFT ? <MintNFT /> : <ViewNFT />}</div>
-              </div>
-            )}
-          </Col>
-        </Row>
-      </div>
-    </MainLayout>
-  );
+	return loading ? (
+		<LoadingPage />
+	) : (
+		<MainLayout>
+			<div className={cx("profile")}>
+				{openFilterModal && (
+					<FilterMobile
+						setOpenFilterModal={setOpenFilterModal}
+						showCreateGameButton={true}
+						setIsGameTab={setIsGameTab}
+						gameList={gameList}
+					/>
+				)}
+				<Row>
+					<Col md={6} className={cx("left")}>
+						<Filter
+							setIsGameTab={setIsGameTab}
+							showCreateGameButton={true}
+							gameList={gameList}
+						/>
+					</Col>
+
+					<Col md={18} className={cx("right-wrapper")}>
+						{isGameTab ? (
+							<div className={cx("right")}>
+								<Game />
+							</div>
+						) : (
+							<div className={cx("right")}>
+								<div className={cx("filter-mobile")}>
+									<Button
+										onClick={() => setOpenFilterModal(!openFilterModal)}
+										className={cx("filter-mobile-btn", openFilterModal && "filter-mobile-btn--active")}
+									>
+										Filter
+									</Button>
+								</div>
+								<div className={cx("group-button")}>
+									<Button className={cx("button", !isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(false)}>
+										View NFT
+									</Button>
+									<Button className={cx("button", isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(true)}>
+										Mint NFT
+									</Button>
+								</div>
+								<div className={cx("content")}>{isMintNFT ? <MintNFT setIsMintNFT={setIsMintNFT} /> : <ViewNFT />}</div>
+							</div>
+						)}
+					</Col>
+				</Row>
+			</div>
+		</MainLayout>
+	);
 };
 
 export default Profile;

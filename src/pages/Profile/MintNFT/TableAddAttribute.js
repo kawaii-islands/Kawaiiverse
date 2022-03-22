@@ -14,8 +14,6 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 	const [indexImg, setIndexImg] = useState(0);
 
 	const handleUploadAttributeImage = async (e, idx) => {
-		console.log('idx :>> ', idx);
-
 		setLoadingUploadAttributeImg(true);
 		const file = e.target.files[0];
 
@@ -56,7 +54,6 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 								placeholder='String'
 								className={cx("input")}
 								onChange={(e) => {
-									console.log('idx 2:>> ', idx);
 									setDetailAttribute("image", e.target.value, idx)
 								}}
 							/>
@@ -71,7 +68,6 @@ const TableAddAttribute = ({ listAttribute, setListAttribute, setDetailAttribute
 								type="file"
 								accept="image/*"
 								onChange={(e) => {
-									console.log('idx 1 :>> ', idx);
 									setIndexImg(idx);
 									handleUploadAttributeImage(e, idx)
 								}}

@@ -13,8 +13,8 @@ const NFTItem = ({ onClick, data }) => {
 				className={cx("top")}
 				style={{
 					backgroundImage:
-						data?.imageUrl ? data.imageUrl
-							: `url(https://images.kawaii.global/kawaii-marketplace-image/category/${"Icon_Plant_Big"}.png)`
+						data?.imageUrl ? `url(${data.imageUrl})`
+							: `url(https://images.kawaii.global/kawaii-marketplace-image/items/205002.png)`
 				}}
 			>
 				<div className={cx("tag")}>

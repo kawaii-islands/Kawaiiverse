@@ -19,7 +19,6 @@ let oneNft = {
 	"author": "",
 	"name": "",
 	"description": "",
-	"uri": "",
 	"mimeType": "",
 	"imageUrl": "",
 	"imageThumbnailUrl": "",
@@ -73,7 +72,6 @@ const MintNFTBox = ({
 		listAttributeCopy[index] = { ...listAttributeCopy[index], [key]: value };
 		
 		setListAttribute(listAttributeCopy);
-		console.log('listAttributeCopy :>> ', listAttributeCopy);
 	}
 
 	const handleUploadImage = async (e) => {
@@ -87,7 +85,7 @@ const MintNFTBox = ({
 			setStateForNftData("imageUrl", url);
 			setLoadingUploadImg(false);
 		} catch (error) {
-			console.log('Error uploading file: ', error)
+			console.log('Error uploading file: ', error);
 		}
 	}
 
@@ -156,7 +154,7 @@ const MintNFTBox = ({
 
 			<div className={cx("main-box")}>
 				<Row className={cx("row")}>
-					<Col lg={5} sm={10} md={10} className={cx("one-field")}>
+					<Col lg={7} sm={10} md={10} className={cx("one-field")}>
 						<div className={cx("title")}>Author: </div>
 						<input
 							placeholder="String"
@@ -165,7 +163,7 @@ const MintNFTBox = ({
 							onChange={(e) => setStateForNftData("author", e.target.value)}
 						/>
 					</Col>
-					<Col lg={5} sm={10} md={10} className={cx("one-field")}>
+					{/* <Col lg={7} sm={10} md={10} className={cx("one-field")}>
 						<div className={cx("title")}>URL: </div>
 						<input
 							placeholder="String"
@@ -173,8 +171,8 @@ const MintNFTBox = ({
 							className={cx("input")}
 							onChange={(e) => setStateForNftData("uri", e.target.value)}
 						/>
-					</Col>
-					<Col lg={5} sm={10} md={10} className={cx("one-field")}>
+					</Col> */}
+					<Col lg={7} sm={10} md={10} className={cx("one-field")}>
 						<div className={cx("title")}>Rarity: </div>
 						<input
 							placeholder="String"
@@ -194,7 +192,7 @@ const MintNFTBox = ({
 							/>
 						)}
 					</Col>
-					<Col lg={2} sm={4} md={2} xs={1} className={cx("one-field")}>
+					<Col lg={3} sm={4} md={2} xs={1} className={cx("one-field")}>
 						<div className={cx("title")}>or: </div>
 						<div className={cx("image-upload")}>
 							<label htmlFor="file-input">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './MintNFT.module.scss';
 import cn from 'classnames/bind';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import plusIcon from 'src/assets/icons/plus.svg';
 import MintNFTBox from './MintNFTBox';
 import { Button } from '@mui/material';
@@ -9,15 +9,17 @@ import { useWeb3React } from '@web3-react/core';
 import web3 from 'web3';
 import { splitSignature } from "@ethersproject/bytes";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const cx = cn.bind(styles);
 const KAWAII1155_ADDRESS = '0xD6eb653866F629e372151f6b5a12762D16E192f5';
 const URL = 'http://159.223.81.170:3000';
 
-const MintNFT = () => {
+const MintNFT = ({ setIsMintNFT }) => {
 	const { account, library } = useWeb3React();
 	const [loading, setLoading] = useState(true);
 	const [openMintNFTBox, setOpenMintNFTBox] = useState(0);
+	const [loadingSubmit, setLoadingSubmit] = useState(false);
 
 	let oneNft = {
 		"type": "",
@@ -25,7 +27,6 @@ const MintNFT = () => {
 		"author": "",
 		"name": "string",
 		"description": "",
-		"uri": "",
 		"mimeType": "",
 		"imageUrl": "",
 		"imageThumbnailUrl": "",
@@ -58,7 +59,6 @@ const MintNFT = () => {
 		listNftCopy[openMintNFTBox] = { ...listNftCopy[openMintNFTBox], [key]: value };
 
 		setListNft(listNftCopy);
-		console.log('listNft :>> ', listNft);
 	}
 
 	const sign = async (account, data, provider) => {
@@ -124,11 +124,12 @@ const MintNFT = () => {
 		});
 
 		const signature = await sign(account, data, library.provider);
-		console.log("signature", signature);
 		return signature;
 	}
 
 	const submit = async () => {
+		setLoadingSubmit(true);
+
 		const signature = await getSignature();
 		let bodyParams = {
 			"nft1155": KAWAII1155_ADDRESS,
@@ -141,6 +142,8 @@ const MintNFT = () => {
 			const res = await axios.post(`${URL}/v1/nft`, bodyParams);
 			if (res.status === 200) {
 				console.log(res);
+				setLoadingSubmit(false);
+				setIsMintNFT(false);
 			}
 		} catch (err) {
 			console.log(err.response);
@@ -209,7 +212,9 @@ const MintNFT = () => {
 					<Button
 						className={cx("submit")}
 						onClick={submit}
-					>Submit</Button>
+					>
+						{loadingSubmit ? <Spin /> : "Submit"}
+					</Button>
 					<Button
 						className={cx("create-nft")}
 						onClick={() => {

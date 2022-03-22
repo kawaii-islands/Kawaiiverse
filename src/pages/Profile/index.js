@@ -64,6 +64,7 @@ const Profile = () => {
             setIsGameTab={setIsGameTab}
             gameList={gameList}
             setGameSelected={setGameSelected}
+            gameSelected={gameSelected}
           />
         )}
         <Row>
@@ -73,6 +74,7 @@ const Profile = () => {
               showCreateGameButton={true}
               gameList={gameList}
               setGameSelected={setGameSelected}
+              gameSelected={gameSelected}
             />
           </Col>
 

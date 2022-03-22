@@ -10,8 +10,8 @@ import { Button } from "@mui/material";
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
-const Filter = ({ setIsGameTab, gameList, showCreateGameButton, setGameSelected }) => {
-  const handleGameClick = address => {
+const Filter = ({ setIsGameTab, gameList, showCreateGameButton, setGameSelected, gameSelected }) => {
+  const handleGameClick = (address, idx) => {
     console.log(address);
     setGameSelected(address);
   };
@@ -44,9 +44,15 @@ const Filter = ({ setIsGameTab, gameList, showCreateGameButton, setGameSelected 
           <Panel header="Game" key="2" className="site-collapse-custom-panel">
             <div className={cx("panel-content")}>
               {gameList?.map((gameName, idx) => (
-                <div className={cx("name")} key={idx} onClick={() => handleGameClick(gameName.gameAddress)}>
+                <div
+                  className={gameName.gameAddress == gameSelected ? cx("name-selected") : cx("name")}
+                  key={idx}
+                  onClick={() => handleGameClick(gameName.gameAddress, idx)}
+                >
                   <img src={logoKawaii} className={cx("name-avatar")} />
-                  <span className={cx("name-text")}>{gameName.gameName}</span>
+                  <span className={gameName.gameAddress == gameSelected ? cx("name-selected-text") : cx("name-text")}>
+                    {gameName.gameName}
+                  </span>
                 </div>
               ))}
             </div>

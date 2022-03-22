@@ -1,55 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import styles from './ViewNFT.module.scss';
-import cn from 'classnames/bind';
-import ListSkeleton from 'src/components/ListSkeleton/ListSkeleton';
-import NFTItem from 'src/components/NFTItem/NFTItem';
-import { Col, Row } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import styles from "./ViewNFT.module.scss";
+import cn from "classnames/bind";
+import ListSkeleton from "src/components/ListSkeleton/ListSkeleton";
+import NFTItem from "src/components/NFTItem/NFTItem";
+import { Col, Row } from "antd";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const cx = cn.bind(styles);
 
-const URL = 'http://159.223.81.170:3000';
+const URL = "http://159.223.81.170:3000";
 
-const ViewNFT = () => {
-	const navigate = useNavigate();
-	const [loading, setLoading] = useState(true);
-	const [listNftByContract, setListNftByContract] = useState();
+const ViewNFT = ({ gameSelected }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [listNftByContract, setListNftByContract] = useState();
 
-	useEffect(() => {
-		getListNftByContract();
-	}, []);
+  useEffect(() => {
+    getListNftByContract();
+  }, [gameSelected]);
 
-	const getListNftByContract = async () => {
-		setLoading(true);
+  const getListNftByContract = async () => {
+    setLoading(true);
 
-		try {
-			const res = await axios.get(`${URL}/v1/nft/0xD6eb653866F629e372151f6b5a12762D16E192f5`);
+    try {
+      const res = await axios.get(`${URL}/v1/nft/${gameSelected}`);
 
-			if (res.status === 200) {
-				setListNftByContract(res.data.data);
-				setLoading(false);
-			}
+      if (res.status === 200) {
+        setListNftByContract(res.data.data);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-		} catch (err) {
-			console.log(err);
-		}
-	}
-
-	return (
-		<div className={cx("view-nft")}>
-			<Row gutter={[20, 20]}>
-				{loading ? <ListSkeleton /> : listNftByContract.map((item, index) => (
-					<Col xs={24} sm={12} md={8} key={index}>
-						<NFTItem
-							data={item}
-							onClick={() => navigate(`/store/1`)}
-						/>
-					</Col>
-				))}
-			</Row>
-		</div>
-	);
-}
+  return (
+    <div className={cx("view-nft")}>
+      <Row gutter={[20, 20]}>
+        {loading ? (
+          <ListSkeleton />
+        ) : (
+          listNftByContract.map((item, index) => (
+            <Col xs={24} sm={12} md={8} key={index}>
+              <NFTItem data={item} onClick={() => navigate(`/store/1`)} />
+            </Col>
+          ))
+        )}
+      </Row>
+    </div>
+  );
+};
 
 export default ViewNFT;

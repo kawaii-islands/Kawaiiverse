@@ -75,7 +75,6 @@ export const sign = async (account, data, provider) => {
 };
 
 export const read = async (method, chainId, address, abi, params) => {
-  console.log(RPC_URLS[chainId]);
   const web3 = new Web3(RPC_URLS[chainId]);
   const contract = new web3.eth.Contract(abi, address);
   const res = await contract.methods[method](...params).call();

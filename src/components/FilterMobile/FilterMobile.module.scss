@@ -75,6 +75,33 @@
           }
         }
       }
+      .name-selected {
+        display: flex;
+        align-items: center;
+        margin-bottom: 14px;
+        cursor: pointer;
+
+        &-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background-color: #ffffff;
+          //   border: 1px solid #6dd0e7;
+        }
+
+        &-text {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 21px;
+          color: #8deaff !important;
+          margin-left: 12px;
+
+          &:hover {
+            color: rgba(255, 255, 255, 0.8);
+            transition-duration: 0.3s;
+          }
+        }
+      }
     }
 
     .panel-content-game {

@@ -8,7 +8,12 @@ import logoKawaii from "../../assets/images/logo_kawaii.png";
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
-const FilterMobile = ({ setOpenFilterModal, setIsGameTab, gameList }) => {
+const FilterMobile = ({ setOpenFilterModal, setIsGameTab, gameList, setGameSelected, gameSelected }) => {
+  const handleGameClick = address => {
+    console.log(address);
+    setGameSelected(address);
+  };
+
   return (
     <div className={cx("filter")}>
       <div className={cx("close-modal")} onClick={() => setOpenFilterModal(false)}>
@@ -36,10 +41,16 @@ const FilterMobile = ({ setOpenFilterModal, setIsGameTab, gameList }) => {
           <Panel header="Game" key="2" className="site-collapse-custom-panel">
             {console.log(gameList)}
             <div className={cx("panel-content")}>
-              {gameList.map((gameName, idx) => (
-                <div className={cx("name")}>
+              {gameList?.map((gameName, idx) => (
+                <div
+                  className={gameName.gameAddress == gameSelected ? cx("name-selected") : cx("name")}
+                  key={idx}
+                  onClick={() => handleGameClick(gameName.gameAddress)}
+                >
                   <img src={logoKawaii} className={cx("name-avatar")} />
-                  <span className={cx("name-text")}>{gameName}</span>
+                  <span className={gameName.gameAddress == gameSelected ? cx("name-selected-text") : cx("name-text")}>
+                    {gameName.gameName}
+                  </span>
                 </div>
               ))}
             </div>

@@ -8,16 +8,12 @@ import logoKawaii from "../../assets/images/logo_kawaii.png";
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
-const FilterMobile = ({ setOpenFilterModal, setIsGameTab,setTab, gameList, setGameSelected, gameSelected }) => {
+const FilterMobile = ({ setOpenFilterModal, setIsGameTab, gameList, setGameSelected, gameSelected }) => {
   const handleGameClick = address => {
     console.log(address);
     setGameSelected(address);
   };
-  const handleChange = (tabs) => {
-    if(tabs.includes("3")){
-      setTab(3);
-    }
-  }
+
   return (
     <div className={cx("filter")}>
       <div className={cx("close-modal")} onClick={() => setOpenFilterModal(false)}>
@@ -29,7 +25,6 @@ const FilterMobile = ({ setOpenFilterModal, setIsGameTab,setTab, gameList, setGa
           expandIconPosition="right"
           bordered={false}
           className="site-collapse-custom-collapse"
-          onChange={handleChange}
         >
           <Panel header="Games" key="1" className="site-collapse-custom-panel">
             <div className={cx("panel-content")}>
@@ -60,7 +55,7 @@ const FilterMobile = ({ setOpenFilterModal, setIsGameTab,setTab, gameList, setGa
               ))}
             </div>
           </Panel>
-          <div className="site-collapse-custom-panel" onClick={() => setTab(2)}>
+          <div className="site-collapse-custom-panel" onClick={() => setIsGameTab(true)}>
             <div className={cx("panel-content-game")}>Create Game</div>
           </div>
         </Collapse>

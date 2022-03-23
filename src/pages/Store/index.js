@@ -12,15 +12,14 @@ import NFTItem from "../../components/NFTItem/NFTItem";
 import { Outlet, useNavigate } from "react-router-dom";
 import { read } from "src/services/web3";
 import filter from "../../assets/icons/filter.svg";
-import Filter from "../../components/Filter/Filter";
+import FilterStore from "src/components/FilterStore/FilterStore";
 import { BSC_CHAIN_ID } from "src/consts/blockchain";
 import FilterMobile from "../../components/FilterMobile/FilterMobile";
 import ListSkeleton from "../../components/ListSkeleton/ListSkeleton";
 import LoadingPage from "src/components/LoadingPage/LoadingPage";
-import FACTORY_ABI from "src/utils/abi/factory.json";
 import NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
 import KAWAII_STORE_ABI from "src/utils/abi/KawaiiverseStore.json";
-import { FACTORY_ADDRESS, KAWAIIVERSE_STORE_ADDRESS } from "src/consts/address";
+import { KAWAIIVERSE_STORE_ADDRESS } from "src/consts/address";
 
 const cx = cn.bind(styles);
 
@@ -114,11 +113,11 @@ const Store = () => {
     <MainLayout>
       <div className={cx("store")}>
         <div className={cx("left")}>
-          <Filter gameList={gameList} setGameSelected={setGameSelected} gameSelected={gameSelected} />
+          <FilterStore gameList={gameList} setGameSelected={setGameSelected} gameSelected={gameSelected} />
         </div>
         <div className={cx("right")}>
           <div className={cx("right-top")}>
-            <div className={cx("right-top-title")}>2000 items</div>
+            <div className={cx("right-top-title")}>{gameItemList.length} items</div>
             <div className={cx("group-search")}>
               <Input
                 disableUnderline
@@ -169,7 +168,12 @@ const Store = () => {
           </div>
 
           <div className={cx("pagination")}>
-            <Pagination showSizeChanger={false} defaultCurrent={1} total={500} itemRender={itemRender} />
+            <Pagination
+              showSizeChanger={false}
+              defaultCurrent={1}
+              total={gameItemList.length}
+              itemRender={itemRender}
+            />
           </div>
         </div>
         {openFilterModal && <FilterMobile setOpenFilterModal={setOpenFilterModal} />}

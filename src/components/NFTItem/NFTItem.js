@@ -9,7 +9,7 @@ const cx = cn.bind(styles);
 const web3 = new Web3(BSC_rpcUrls);
 
 const NFTItem = ({ onClick, data }) => {
-  console.log(Number(web3.utils.fromWei(data.price.toString())));
+  // console.log(data);
 
   return (
     <div className={cx("nft-item")} onClick={onClick}>
@@ -33,7 +33,7 @@ const NFTItem = ({ onClick, data }) => {
         </div>
         <div className={cx("title")}>{data?.name || "Name"}</div>
         <div className={cx("number-box")}>
-          <span className={cx("number")}>{Number(web3.utils.fromWei(data.price.toString()))} KWT</span>
+          <span className={cx("number")}>{data.price ? Number(web3.utils.fromWei(data.price.toString())) : 0} KWT</span>
         </div>
       </div>
     </div>

@@ -9,15 +9,18 @@ import { Button } from "@mui/material";
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
-const FilterStore = ({ gameList, setGameSelected, gameSelected }) => {
-  const handleGameClick = (address, idx) => {
-    console.log(address);
-    setGameSelected(address);
+const FilterStore = ({ gameList, setGameSelected, gameSelected, checkGameIfIsSelected }) => {
+  const handleGameClick = (address, name) => {
+    if (checkGameIfIsSelected(address) != -1) {
+      setGameSelected(gameSelected => {
+        const copyGame = [...gameSelected];
+        copyGame.splice(checkGameIfIsSelected(address), 1);
+        return copyGame;
+      });
+    } else {
+      setGameSelected(gameSelected => [...gameSelected, { gameAddress: address, gameName: name }]);
+    }
   };
-
-  useEffect(() => {
-    console.log(gameList);
-  });
 
   return (
     <div className={cx("filter")}>
@@ -27,30 +30,18 @@ const FilterStore = ({ gameList, setGameSelected, gameSelected }) => {
       </div>
       <div className={cx("collapse")}>
         <Collapse
-          defaultActiveKey={["1", "2"]}
+          defaultActiveKey={["1"]}
           expandIconPosition="right"
           bordered={false}
           className="site-collapse-custom-collapse"
         >
-          <Panel header="Store" key="1" className="site-collapse-custom-panel">
-            <div className={cx("panel-content")}>
-              <div className={cx("name")}>
-                <img src={logoKawaii} className={cx("name-avatar")} />
-                <span className={cx("name-text")}>Kawaii island</span>
-              </div>
-              <div className={cx("name")}>
-                <img src={logoKawaii} className={cx("name-avatar")} />
-                <span className={cx("name-text")}>Kawaii island</span>
-              </div>
-            </div>
-          </Panel>
-          <Panel header="Game" key="2" className="site-collapse-custom-panel">
+          <Panel header="Game" key="1" className="site-collapse-custom-panel">
             <div className={cx("panel-content")}>
               {gameList?.map((gameName, idx) => (
                 <div
                   className={gameName.gameAddress == gameSelected ? cx("name-selected") : cx("name")}
                   key={idx}
-                  onClick={() => handleGameClick(gameName.gameAddress, idx)}
+                  onClick={() => handleGameClick(gameName.gameAddress, gameName.gameName)}
                 >
                   <img src={logoKawaii} className={cx("name-avatar")} />
                   <span className={gameName.gameAddress == gameSelected ? cx("name-selected-text") : cx("name-text")}>
@@ -60,6 +51,8 @@ const FilterStore = ({ gameList, setGameSelected, gameSelected }) => {
               ))}
             </div>
           </Panel>
+          <Panel header="Type" key="2" className="site-collapse-custom-panel"></Panel>
+          <Panel header="Amount" key="3" className="site-collapse-custom-panel"></Panel>
         </Collapse>
       </div>
     </div>

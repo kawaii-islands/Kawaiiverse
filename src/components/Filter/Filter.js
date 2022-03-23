@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import cn from "classnames/bind";
 import styles from "./Filter.module.scss";
 import filter from "../../assets/icons/filter.svg";
 import { Collapse } from "antd";
 import logoKawaii from "../../assets/images/logo_kawaii.png";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
 import { Button } from "@mui/material";
 
 const { Panel } = Collapse;
@@ -16,6 +15,10 @@ const Filter = ({ setIsGameTab, gameList, showCreateGameButton, setGameSelected,
     setGameSelected(address);
   };
 
+  useEffect(() => {
+    console.log(gameList);
+  });
+
   return (
     <div className={cx("filter")}>
       <div className={cx("card-header")}>
@@ -24,7 +27,7 @@ const Filter = ({ setIsGameTab, gameList, showCreateGameButton, setGameSelected,
       </div>
       <div className={cx("collapse")}>
         <Collapse
-          defaultActiveKey={["1"]}
+          defaultActiveKey={["1", "2"]}
           expandIconPosition="right"
           bordered={false}
           className="site-collapse-custom-collapse"

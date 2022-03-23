@@ -93,6 +93,26 @@
           }
         }
       }
+      .search-wrapper{
+        display: flex;
+        align-items: center;
+        border: 1px solid #E9E9E9;
+        padding: 4px;
+        border-radius: 4px;
+        .search-input{
+          width: 80%;
+          border: none;
+          padding: 8px 30px;
+          background-color: #162F54;
+          
+        }
+        .search-icon{
+          font-size: 22px;
+          font-weight: bold;
+          color: #006FED;
+        }
+      }
+      
     }
 
     .panel-content-game {

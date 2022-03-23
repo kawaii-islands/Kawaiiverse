@@ -17,6 +17,7 @@ import { useWeb3React } from "@web3-react/core";
 import { FACTORY_ADDRESS } from "src/consts/address";
 
 import FilterMobile from "src/components/FilterMobile/FilterMobile";
+import Sell from "./Sell/Sell";
 const cx = cn.bind(styles);
 
 const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
@@ -26,10 +27,14 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [isMintNFT, setIsMintNFT] = useState(true);
   const [isGameTab, setIsGameTab] = useState(false);
+  const [isSellTab, setIsSellTab] = useState(false);
+  const [tab, setTab] = useState(1);
+
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [gameList, setGameList] = useState([]);
   const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
 
+ 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -51,7 +56,6 @@ const Profile = () => {
       console.log(gameList);
     }
   };
-
   return loading ? (
     <LoadingPage />
   ) : (
@@ -62,6 +66,9 @@ const Profile = () => {
             setOpenFilterModal={setOpenFilterModal}
             showCreateGameButton={true}
             setIsGameTab={setIsGameTab}
+            
+            setIsSellTab={setIsSellTab}
+            setTab={setTab}
             gameList={gameList}
             setGameSelected={setGameSelected}
             gameSelected={gameSelected}
@@ -71,6 +78,7 @@ const Profile = () => {
           <Col md={6} className={cx("left")}>
             <Filter
               setIsGameTab={setIsGameTab}
+              setTab={setTab}
               showCreateGameButton={true}
               gameList={gameList}
               setGameSelected={setGameSelected}
@@ -79,7 +87,36 @@ const Profile = () => {
           </Col>
 
           <Col md={18} className={cx("right-wrapper")}>
-            {isGameTab ? (
+            {tab === 1 && <div className={cx("right")}>
+                <Game />
+              </div>}
+              {tab === 2 && <div className={cx("right")}>
+                <div className={cx("filter-mobile")}>
+                  <Button
+                    onClick={() => setOpenFilterModal(!openFilterModal)}
+                    className={cx("filter-mobile-btn", openFilterModal && "filter-mobile-btn--active")}
+                  >
+                    Filter
+                  </Button>
+                </div>
+                <div className={cx("group-button")}>
+                  <Button className={cx("button", !isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(false)}>
+                    View NFT
+                  </Button>
+                  <Button className={cx("button", isMintNFT ? "active" : "text")} onClick={() => setIsMintNFT(true)}>
+                    Mint NFT
+                  </Button>
+                </div>
+                <div className={cx("content")}>
+                  {isMintNFT ? (
+                    <MintNFT setIsMintNFT={setIsMintNFT} gameSelected={gameSelected} />
+                  ) : (
+                    <ViewNFT gameSelected={gameSelected} />
+                  )}
+                </div>
+              </div>}
+              {tab === 3 && <div className={cx("right")}><Sell /></div>}
+            {/* {isGameTab ? (
               <div className={cx("right")}>
                 <Game />
               </div>
@@ -109,7 +146,7 @@ const Profile = () => {
                   )}
                 </div>
               </div>
-            )}
+            )} */}
           </Col>
         </Row>
       </div>

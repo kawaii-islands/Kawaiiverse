@@ -12,6 +12,7 @@ import NFTItem from "../../components/NFTItem/NFTItem";
 import { Outlet, useNavigate } from "react-router-dom";
 import { read } from "src/services/web3";
 import filter from "../../assets/icons/filter.svg";
+import cancel from "../../assets/icons/cancel.svg";
 import FilterStore from "src/components/FilterStore/FilterStore";
 import { BSC_CHAIN_ID } from "src/consts/blockchain";
 import FilterMobile from "../../components/FilterMobile/FilterMobile";
@@ -20,11 +21,9 @@ import LoadingPage from "src/components/LoadingPage/LoadingPage";
 import NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
 import KAWAII_STORE_ABI from "src/utils/abi/KawaiiverseStore.json";
 import { KAWAIIVERSE_STORE_ADDRESS } from "src/consts/address";
+import { toast } from "react-toastify";
 
 const cx = cn.bind(styles);
-
-const mockData = [1, 2, 3, 4, 5, 6];
-const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
 
 const Store = () => {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ const Store = () => {
   const [loading, setLoading] = useState(true);
   const [loadingListNFT, setLoadingListNFT] = useState(true);
   const [totalGameAmount, setTotalGameAmount] = useState(0);
-  const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
+  const [gameSelected, setGameSelected] = useState([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -53,40 +52,80 @@ const Store = () => {
 
   useEffect(() => {
     logGameData();
-  }, [gameSelected]);
+  }, [gameSelected, gameList]);
 
   const logInfo = async () => {
     if (account) {
-      const totalGame = await read("lengthListNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, []);
-      setGameList([]);
-      for (let index = 0; index < totalGame; index++) {
-        let gameAddress = await read("listNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [index]);
-        console.log(gameAddress);
-        if (!index) {
-          setGameSelected(gameAddress);
-        }
-        let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
-        setGameList(gameList => [...gameList, { gameAddress, gameName }]);
-      }
+      try {
+        const totalGame = await read(
+          "lengthListNFT1155",
+          BSC_CHAIN_ID,
+          KAWAIIVERSE_STORE_ADDRESS,
+          KAWAII_STORE_ABI,
+          [],
+        );
+        setGameList([]);
+        const tmpArray = [...Array(totalGame.length).keys()];
+        try {
+          const gameListData = Promise.all(
+            tmpArray.map(async (nftId, index) => {
+              let gameAddress = await read("listNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
+                index,
+              ]);
+              let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
+              setGameList(gameList => [...gameList, { gameAddress, gameName }]);
+            }),
+          );
 
-      setTotalGameAmount(totalGame);
+          setTotalGameAmount(gameList.length);
+        } catch (error) {
+          console.log(error);
+          toast.error(error.message || "An error occurred!");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message || "An error occurred!");
+      }
     }
   };
 
   const logGameData = async () => {
-    let gameItemLength = await read("lengthSellNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
-      gameSelected,
-    ]);
-    for (let index = 0; index < gameItemLength; index++) {
-      let gameItem = await read("dataNFT1155s", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
-        gameSelected,
-        index,
-      ]);
-      console.log(gameItem);
-      setGameItemList(gameItemList => [...gameItemList, gameItem]);
-      console.log(gameItemList);
+    setLoadingListNFT(true);
+    setGameItemList([]);
+    const tmpGameArray = [...Array(gameSelected.length ? gameSelected.length : gameList.length).keys()];
+    try {
+      const gameListData = Promise.all(
+        tmpGameArray.map(async (nftId, idx) => {
+          let gameItemLength = await read(
+            "lengthSellNFT1155",
+            BSC_CHAIN_ID,
+            KAWAIIVERSE_STORE_ADDRESS,
+            KAWAII_STORE_ABI,
+            [gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress],
+          );
+          const tmpItemArray = [...Array(gameItemLength).keys()];
+          try {
+            const gameItemData = Promise.all(
+              tmpItemArray.map(async (nftId, index) => {
+                let gameItem = await read("dataNFT1155s", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
+                  gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress,
+                  index,
+                ]);
+                setGameItemList(gameItemList => [...gameItemList, gameItem]);
+              }),
+            );
+          } catch (error) {
+            console.log(error);
+            toast.error(error.message || "An error occurred!");
+          }
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "An error occurred!");
     }
-    console.log(gameItemList);
+
+    setLoadingListNFT(false);
   };
 
   const menu = (
@@ -107,13 +146,40 @@ const Store = () => {
     return originalElement;
   };
 
+  const handleDeleteFilter = address => {
+    setGameSelected(gameSelected => {
+      const copyGame = [...gameSelected];
+      copyGame.splice(checkGameIfIsSelected(address), 1);
+      return copyGame;
+    });
+  };
+
+  const handleClearFilter = () => {
+    setGameSelected([]);
+  };
+
+  const checkGameIfIsSelected = address => {
+    let count = -1;
+    gameSelected.map((game, idx) => {
+      if (game.gameAddress == address) {
+        count = idx;
+      }
+    });
+    return count;
+  };
+
   return loading ? (
     <LoadingPage />
   ) : (
     <MainLayout>
       <div className={cx("store")}>
         <div className={cx("left")}>
-          <FilterStore gameList={gameList} setGameSelected={setGameSelected} gameSelected={gameSelected} />
+          <FilterStore
+            gameList={gameList}
+            setGameSelected={setGameSelected}
+            gameSelected={gameSelected}
+            checkGameIfIsSelected={checkGameIfIsSelected}
+          />
         </div>
         <div className={cx("right")}>
           <div className={cx("right-top")}>
@@ -150,6 +216,24 @@ const Store = () => {
                   <span style={{ paddingLeft: "8px" }}>Filter</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className={cx("right-filter")}>
+            {gameSelected?.map((game, idx) => (
+              <div className={cx("filter-box")} key={game.gameAddress}>
+                <img
+                  className={cx("filter-box-image")}
+                  src={cancel}
+                  alt="cancel"
+                  onClick={() => handleDeleteFilter(game.gameAddress)}
+                />
+                <span style={{ paddingLeft: "5px" }}>{game.gameName}</span>
+              </div>
+            ))}
+
+            <div className={cx("filter-clear")} onClick={handleClearFilter}>
+              CLEAR ALL
             </div>
           </div>
 

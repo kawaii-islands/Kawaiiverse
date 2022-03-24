@@ -52,7 +52,7 @@ $break-point-3: 767px;
         @media (max-width: $break-point-3) {
           flex-direction: column;
           align-items: flex-start;
-		  width: 100%;
+          width: 100%;
         }
 
         .search {
@@ -115,6 +115,32 @@ $break-point-3: 767px;
             }
           }
         }
+      }
+    }
+
+    &-filter {
+      margin-top: 36px;
+      .filter-box {
+        display: inline-block;
+        padding: 2px 8px 2px 8px;
+        margin-right: 5px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        background: #1f1e1e6e;
+        &-image {
+          padding-bottom: 2px;
+          cursor: pointer;
+        }
+      }
+      .filter-clear {
+        display: inline-block;
+        background: linear-gradient(180deg, #00c6fb 0%, #005bea 100%);
+        background-clip: text;
+        color: transparent;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
       }
     }
 

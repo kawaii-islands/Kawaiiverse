@@ -41,6 +41,7 @@ const Profile = () => {
   }, [account]);
 
   const logInfo = async () => {
+    setGameList([])
     if (account) {
       const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
       for (let index = 0; index < totalGame; index++) {
@@ -48,6 +49,8 @@ const Profile = () => {
         let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
         setGameList(gameList => [...gameList, { gameAddress, gameName }]);
       }
+     
+
       console.log(gameList);
     }
   };
@@ -81,7 +84,11 @@ const Profile = () => {
           <Col md={18} className={cx("right-wrapper")}>
             {isGameTab ? (
               <div className={cx("right")}>
-                <Game />
+                <Game gameList={gameList} 
+                setGameSelected={setGameSelected}
+              gameSelected={gameSelected}
+              logInfo={logInfo}
+              />
               </div>
             ) : (
               <div className={cx("right")}>

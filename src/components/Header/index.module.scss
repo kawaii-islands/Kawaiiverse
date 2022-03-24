@@ -8,7 +8,7 @@ $break-point-2: 1180px;
   height: 70px;
 
   .container {
-    max-width: 1180px;
+    max-width: 96%;
     height: 70px;
     margin: auto auto;
     display: flex;
@@ -16,7 +16,7 @@ $break-point-2: 1180px;
     justify-content: space-between;
 
     @media (max-width: $break-point-2) {
-      max-width: 940px;
+    //   max-width: 940px;
     }
 
     @media (max-width: $break-point-1) {

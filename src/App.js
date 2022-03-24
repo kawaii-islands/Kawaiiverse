@@ -18,44 +18,48 @@ import Messages from "./components/Messages";
 const Home = React.lazy(() => import("src/pages/Home/index.js"));
 const Store = React.lazy(() => import("src/pages/Store/index.js"));
 const NFTDetail = React.lazy(() => import("src/pages/NFTDetail/index.js"));
+const SellNFT = React.lazy(() => import("src/pages/Profile/SellNFT/index.js"));
 // const ManageGame = React.lazy(() => import("src/pages/ManageGame/index.js"));
 
 function App() {
-  const context = useWeb3React();
-  const { connector } = context;
-  const [activatingConnector, setActivatingConnector] = useState();
-  const triedEager = useEagerConnect();
-  useInactiveListener(!triedEager || !!activatingConnector);
-  useEffect(() => {
-    if (activatingConnector && activatingConnector === connector) {
-      setActivatingConnector(undefined);
-    }
-  }, [activatingConnector, connector]);
+	const context = useWeb3React();
+	const { connector } = context;
+	const [activatingConnector, setActivatingConnector] = useState();
+	const triedEager = useEagerConnect();
+	useInactiveListener(!triedEager || !!activatingConnector);
+	useEffect(() => {
+		if (activatingConnector && activatingConnector === connector) {
+			setActivatingConnector(undefined);
+		}
+	}, [activatingConnector, connector]);
 
-  return (
-    <Provider store={store}>
-      <ThemeProvider theme={light}>
-        <CssBaseline />
-        <Messages />
-        <Router>
-          <Header />
-          <Suspense fallback={<LoadingPage />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="store">
-                <Route index element={<Store />} />
-                <Route path=":id" element={<NFTDetail />} />
-              </Route>
-              {/* <Route path="profile/manage-game" element={<ManageGame />} /> */}
-              <Route exact path="profile" element={<Profile />}>
-                {/* <Route path="manage-game" element={<ManageGame />} /> */}
-              </Route>
-            </Routes>
-          </Suspense>
-        </Router>
-      </ThemeProvider>
-    </Provider>
-  );
+	return (
+		<Provider store={store}>
+			<ThemeProvider theme={light}>
+				<CssBaseline />
+				<Messages />
+				<Router>
+					<Header />
+					<Suspense fallback={<LoadingPage />}>
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="store">
+								<Route index element={<Store />} />
+								<Route path=":id" element={<NFTDetail />} />
+							</Route>
+
+							<Route path="profile">
+								<Route index element={<Profile />} />
+								<Route path="view-nft/:id" element={<SellNFT />} />
+							</Route>
+							{/* <Route exact path="profile" element={<Profile />}>
+							</Route> */}
+						</Routes>
+					</Suspense>
+				</Router>
+			</ThemeProvider>
+		</Provider>
+	);
 }
 
 export default App;

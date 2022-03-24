@@ -6,7 +6,7 @@ const RPC_URL_1 = "https://mainnet.infura.io/v3/920d962b397d4646989aa594147ba78c
 const RPC_URL_42 = "https://kovan.infura.io/v3/920d962b397d4646989aa594147ba78c";
 // const RPC_URL_56 = "https://bsc-dataseed.binance.org";
 const RPC_URL_56 = "https://bsc-dataseed4.defibit.io/";
-const RPC_URL_97 = "https://data-seed-prebsc-1-s2.binance.org:8545/";
+const RPC_URL_97 = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 
 const POLLING_INTERVAL = 12000;
 export const RPC_URLS = {

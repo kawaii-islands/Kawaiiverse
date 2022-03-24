@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Game.module.scss";
+import styles from "./CreateGame.module.scss";
 import cn from "classnames/bind";
 import { read, createNetworkOrSwitch, write } from "src/services/web3";
 import { BSC_CHAIN_ID, BSC_rpcUrls } from "src/consts/blockchain";
@@ -13,11 +13,12 @@ import { Button } from "@mui/material";
 import RELAY_ABI from "src/utils/abi/relay.json";
 import { RELAY_ADDRESS, KAWAIIVERSE_NFT1155_ADDRESS, FACTORY_ADDRESS } from "src/consts/address";
 import { Close } from "@mui/icons-material";
+import MainLayout from "src/components/MainLayout";
 
 const cx = cn.bind(styles);
 const web3 = new Web3(BSC_rpcUrls);
 
-const Game = () => {
+const CreateGame = () => {
 	const { account, chainId, library } = useWeb3React();
 	const [loading, setLoading] = useState(false);
 
@@ -143,4 +144,4 @@ const Game = () => {
 	);
 };
 
-export default Game;
+export default CreateGame;

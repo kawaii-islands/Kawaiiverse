@@ -189,16 +189,6 @@ const Store = () => {
                 disableUnderline
                 placeholder="Search for NFT"
                 className={cx("search")}
-                // value={searchInput}
-                // onChange={(e) => {
-                // 	setSearchInput(e.target.value);
-                // }}
-                // onKeyDown={(e) => {
-                // 	if (e.key === "Enter" || e.keyCode === 13) {
-                // 		setShowModalSearch(false);
-                // 		return filterInput();
-                // 	}
-                // }}
                 endAdornment={
                   <InputAdornment position="end">
                     <SearchIcon className={cx("icon")} />

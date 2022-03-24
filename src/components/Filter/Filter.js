@@ -4,69 +4,81 @@ import styles from "./Filter.module.scss";
 import filter from "../../assets/icons/filter.svg";
 import { Collapse } from "antd";
 import logoKawaii from "../../assets/images/logo_kawaii.png";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
-const Filter = ({ setIsGameTab, gameList, showCreateGameButton, setGameSelected, gameSelected }) => {
-  const handleGameClick = (address, idx) => {
-    console.log(address);
-    setGameSelected(address);
-  };
+const Filter = ({ gameList, setGameSelected, gameSelected, setActiveTab }) => {
+	const navigate = useNavigate();
 
-  return (
-    <div className={cx("filter")}>
-      <div className={cx("card-header")}>
-        <img src={filter} alt="filter" />
-        <span className={cx("title")}>Filter</span>
-      </div>
-      <div className={cx("collapse")}>
-        <Collapse
-          defaultActiveKey={["1"]}
-          expandIconPosition="right"
-          bordered={false}
-          className="site-collapse-custom-collapse"
-        >
-          <Panel header="Store" key="1" className="site-collapse-custom-panel">
-            <div className={cx("panel-content")}>
-              <div className={cx("name")}>
-                <img src={logoKawaii} className={cx("name-avatar")} />
-                <span className={cx("name-text")}>Kawaii island</span>
-              </div>
-              <div className={cx("name")}>
-                <img src={logoKawaii} className={cx("name-avatar")} />
-                <span className={cx("name-text")}>Kawaii island</span>
-              </div>
-            </div>
-          </Panel>
-          <Panel header="Game" key="2" className="site-collapse-custom-panel">
-            <div className={cx("panel-content")}>
-              {gameList?.map((gameName, idx) => (
-                <div
-                  className={gameName.gameAddress == gameSelected ? cx("name-selected") : cx("name")}
-                  key={idx}
-                  onClick={() => handleGameClick(gameName.gameAddress, idx)}
-                >
-                  <img src={logoKawaii} className={cx("name-avatar")} />
-                  <span className={gameName.gameAddress == gameSelected ? cx("name-selected-text") : cx("name-text")}>
-                    {gameName.gameName}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Panel>
+	const handleGameClick = (address, idx) => {
+		console.log(address);
+		setGameSelected(address);
+	};
 
-          {showCreateGameButton && (
-            <div onClick={() => setIsGameTab(true)}>
-              <Button className={cx("button")}>Create Game</Button>
-            </div>
-          )}
-        </Collapse>
-      </div>
-    </div>
-  );
+	const handleNavigateProfile = (key) => {
+		console.log('key :>> ', key.slice(-1));
+		let tab = key.slice(-1);
+		setActiveTab(parseInt(tab));
+	}
+
+	return (
+		<div className={cx("filter")}>
+			<div className={cx("create-game")} onClick={() => setActiveTab(0)}>
+				<span>Create game</span>
+				<PlusOutlined />
+			</div>
+
+			<div className={cx("collapse")}>
+				<Collapse
+					defaultActiveKey={["1"]}
+					expandIconPosition="right"
+					bordered={false}
+					className="site-collapse-custom-collapse"
+					onChange={(key) => handleNavigateProfile(key)}
+				>
+					<Panel
+						header="Game"
+						key="1"
+						className="site-collapse-custom-panel"
+						onClick={() => navigate("/profile")}
+					>
+						<div className={cx("panel-content")}>
+							{gameList?.map((gameName, idx) => (
+								<div
+									className={gameName.gameAddress == gameSelected ? cx("name-selected") : cx("name")}
+									key={idx}
+									onClick={() => handleGameClick(gameName.gameAddress, idx)}
+								>
+									<img src={logoKawaii} className={cx("name-avatar")} />
+									<span className={gameName.gameAddress == gameSelected ? cx("name-selected-text") : cx("name-text")}>
+										{gameName.gameName}
+									</span>
+								</div>
+							))}
+						</div>
+					</Panel>
+
+					<Panel
+						header="Store"
+						key="2"
+						className="site-collapse-custom-panel"
+					>
+					</Panel>
+
+					<Panel
+						header="Marketplace"
+						key="3"
+						className="site-collapse-custom-panel"
+					>
+					</Panel>
+				</Collapse>
+			</div>
+		</div>
+	);
 };
 
 export default Filter;

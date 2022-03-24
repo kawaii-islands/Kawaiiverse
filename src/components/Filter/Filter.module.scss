@@ -4,35 +4,22 @@
   padding: 60px 20px;
   height: 100%;
 
-  //   animation-name: example;
-  //   transform-origin: top;
-  //   animation-duration: 1s;
-  //   transition: all 1s ease-in-out;
-
-  //   @keyframes example {
-  //     0% {
-  //       width: 0;
-  //     }
-  //     100% {
-  //       height: 100vh;
-  //     }
-  //   }
-
-  .card-header {
+  .create-game {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 14px 12px;
     display: flex;
     align-items: center;
-
-    .title {
-      font-weight: 600;
-      font-size: 24px;
-      color: #ffffff;
-      margin-left: 12px;
-    }
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    border-radius: 8px;
+	margin-bottom: 40px;
+	cursor: pointer;
   }
 
   .collapse {
-    margin-top: 60px;
-
     .panel-content {
       font-weight: 600;
       font-size: 14px;

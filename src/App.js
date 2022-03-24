@@ -12,14 +12,18 @@ import { useEagerConnect, useInactiveListener } from "src/helpers/hooks";
 import "antd/dist/antd.css";
 import Header from "src/components/Header/index";
 import LoadingPage from "./components/LoadingPage/LoadingPage";
-import Profile from "./pages/Profile";
 import Messages from "./components/Messages";
 
 const Home = React.lazy(() => import("src/pages/Home/index.js"));
 const Store = React.lazy(() => import("src/pages/Store/index.js"));
 const NFTDetail = React.lazy(() => import("src/pages/NFTDetail/index.js"));
-const SellNFT = React.lazy(() => import("src/pages/Profile/SellNFT/index.js"));
-// const ManageGame = React.lazy(() => import("src/pages/ManageGame/index.js"));
+
+const Profile = React.lazy(() => import("src/pages/Profile/index"));
+const StoreProfile = React.lazy(() => import("src/pages/Profile/Store/index"));
+const CreateGame = React.lazy(() => import("src/pages/Profile/CreateGame/CreateGame"));
+const Game = React.lazy(() => import("src/pages/Profile/Game/index"));
+const Marketplace = React.lazy(() => import("src/pages/Profile/Marketplace/index"));
+
 
 function App() {
 	const context = useWeb3React();
@@ -50,10 +54,11 @@ function App() {
 
 							<Route path="profile">
 								<Route index element={<Profile />} />
-								<Route path="view-nft/:id" element={<SellNFT />} />
+								<Route path="game" element={<Game />} />
+								<Route path="create-game" element={<CreateGame />} />
+								<Route path="store" element={<StoreProfile />} />
+								<Route path="marketplace" element={<Marketplace />} />
 							</Route>
-							{/* <Route exact path="profile" element={<Profile />}>
-							</Route> */}
 						</Routes>
 					</Suspense>
 				</Router>

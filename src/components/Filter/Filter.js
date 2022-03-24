@@ -20,7 +20,7 @@ const Filter = ({ gameList, setGameSelected, gameSelected, setActiveTab }) => {
 	};
 
 	const handleNavigateProfile = (key) => {
-		console.log('key :>> ', key.slice(-1));
+		console.log('key :>> ', key);
 		let tab = key.slice(-1);
 		setActiveTab(parseInt(tab));
 	}

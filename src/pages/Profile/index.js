@@ -41,7 +41,7 @@ const Profile = () => {
 				return <Game />
 			case 2:
 				return <StoreProfile />
-			case 4:
+			case 3:
 				return <Marketplace />
 			default:
 				return <CreateGame />

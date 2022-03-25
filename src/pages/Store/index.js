@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
 import cn from "classnames/bind";
-import styles from "./index.module.scss";
-import MainLayout from "src/components/MainLayout";
-import { InputAdornment, TextField, Input } from "@mui/material";
-import searchIcon from "../../assets/icons/search_24px.svg";
+import NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
+import KAWAII_STORE_ABI from "src/utils/abi/KawaiiverseStore.json";
+import { BSC_CHAIN_ID } from "src/consts/blockchain";
+import { KAWAIIVERSE_STORE_ADDRESS } from "src/consts/address";
+import { toast } from "react-toastify";
 import { useWeb3React } from "@web3-react/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { Menu, Dropdown, Row, Col, Pagination } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import NFTItem from "../../components/NFTItem/NFTItem";
 import { Outlet, useNavigate } from "react-router-dom";
 import { read } from "src/services/web3";
+import { DownOutlined } from "@ant-design/icons";
+
+
+import { InputAdornment, TextField, Input } from "@mui/material";
+import MainLayout from "src/components/MainLayout";
+import searchIcon from "../../assets/icons/search_24px.svg";
+import NFTItem from "../../components/NFTItem/NFTItem";
 import filter from "../../assets/icons/filter.svg";
 import cancel from "../../assets/icons/cancel.svg";
 import FilterStore from "src/components/FilterStore/FilterStore";
-import { BSC_CHAIN_ID } from "src/consts/blockchain";
 import FilterMobile from "../../components/FilterMobile/FilterMobile";
 import ListSkeleton from "../../components/ListSkeleton/ListSkeleton";
 import LoadingPage from "src/components/LoadingPage/LoadingPage";
-import NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
-import KAWAII_STORE_ABI from "src/utils/abi/KawaiiverseStore.json";
-import { KAWAIIVERSE_STORE_ADDRESS } from "src/consts/address";
-import { toast } from "react-toastify";
+import ListNft from "src/components/ListNft/ListNft";
+
+import styles from "./index.module.scss";
 
 const cx = cn.bind(styles);
 
@@ -35,7 +39,6 @@ const Store = () => {
   const [loadingListNFT, setLoadingListNFT] = useState(true);
   const [totalGameAmount, setTotalGameAmount] = useState(0);
   const [gameSelected, setGameSelected] = useState([]);
-
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -48,13 +51,15 @@ const Store = () => {
 
   useEffect(() => {
     logInfo();
-  }, [totalGameAmount]);
-
+  }, [totalGameAmount, account]);
+  
   useEffect(() => {
     logGameData();
   }, [gameSelected, gameList]);
 
   const logInfo = async () => {
+    console.log("logInfo")
+    console.log(account)
     if (account) {
       try {
         const totalGame = await read(
@@ -72,7 +77,9 @@ const Store = () => {
               let gameAddress = await read("listNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
                 index,
               ]);
+              console.log("GameAddress", gameAddress)
               let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
+              console.log("GameName", gameName);
               setGameList(gameList => [...gameList, { gameAddress, gameName }]);
             }),
           );
@@ -232,11 +239,12 @@ const Store = () => {
               {loadingListNFT ? (
                 <ListSkeleton />
               ) : (
-                gameItemList.map((item, index) => (
-                  <Col xs={24} sm={12} md={8} key={index}>
-                    <NFTItem data={item} onClick={() => navigate(`/store/1`)} />
-                  </Col>
-                ))
+                // gameItemList.map((item, index) => (
+                //   <Col xs={24} sm={12} md={8} key={index}>
+                //     <NFTItem data={item} onClick={() => navigate(`/store/1`)} />
+                //   </Col>
+                // ))
+                <ListNft gameItemList={gameItemList}/>
               )}
             </Row>
           </div>

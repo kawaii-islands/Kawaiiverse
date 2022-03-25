@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import cn from "classnames/bind";
 import styles from "./index.module.scss";
-// import View
+import ViewItemNFT from "./ViewItemNFT";
+import SellItemNFT from "./SellItemNFT";
 
 const cx = cn.bind(styles);
 
@@ -20,7 +21,7 @@ const StoreProfile = () => {
             Sell NFT
           </Button>
         </div>
-        <div className={cx("content")}>{isSellNFT ? <p>SellNFT</p> : <p>ViewNFT</p>}</div>
+        <div className={cx("content")}>{isSellNFT ? <SellItemNFT /> : <ViewItemNFT />}</div>
       </div>
     </div>
   );

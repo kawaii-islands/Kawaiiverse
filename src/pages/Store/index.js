@@ -12,7 +12,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { read } from "src/services/web3";
 import { DownOutlined } from "@ant-design/icons";
 
-
 import { InputAdornment, TextField, Input } from "@mui/material";
 import MainLayout from "src/components/MainLayout";
 import searchIcon from "../../assets/icons/search_24px.svg";
@@ -52,14 +51,14 @@ const Store = () => {
   useEffect(() => {
     logInfo();
   }, [totalGameAmount, account]);
-  
+
   useEffect(() => {
     logGameData();
   }, [gameSelected, gameList]);
 
   const logInfo = async () => {
-    console.log("logInfo")
-    console.log(account)
+    console.log("logInfo");
+    console.log(account);
     if (account) {
       try {
         const totalGame = await read(
@@ -70,14 +69,17 @@ const Store = () => {
           [],
         );
         setGameList([]);
-        const tmpArray = [...Array(totalGame.length).keys()];
+        console.log("total game:" + totalGame);
+        // const tmpArray = [...Array(totalGame.length).keys()];
+        const tmpArray = Array.from({ length: totalGame }, (v, i) => i);
+        console.log(tmpArray);
         try {
           const gameListData = Promise.all(
             tmpArray.map(async (nftId, index) => {
               let gameAddress = await read("listNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
                 index,
               ]);
-              console.log("GameAddress", gameAddress)
+              console.log("GameAddress", gameAddress);
               let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
               console.log("GameName", gameName);
               setGameList(gameList => [...gameList, { gameAddress, gameName }]);
@@ -101,6 +103,7 @@ const Store = () => {
     setGameItemList([]);
     const tmpGameArray = [...Array(gameSelected.length ? gameSelected.length : gameList.length).keys()];
     try {
+      console.log(tmpGameArray);
       const gameListData = Promise.all(
         tmpGameArray.map(async (nftId, idx) => {
           let gameItemLength = await read(
@@ -111,6 +114,7 @@ const Store = () => {
             [gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress],
           );
           const tmpItemArray = [...Array(gameItemLength).keys()];
+          console.log(tmpItemArray);
           try {
             const gameItemData = Promise.all(
               tmpItemArray.map(async (nftId, index) => {
@@ -118,6 +122,7 @@ const Store = () => {
                   gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress,
                   index,
                 ]);
+                console.log(gameItem);
                 setGameItemList(gameItemList => [...gameItemList, gameItem]);
               }),
             );
@@ -244,7 +249,7 @@ const Store = () => {
                 //     <NFTItem data={item} onClick={() => navigate(`/store/1`)} />
                 //   </Col>
                 // ))
-                <ListNft gameItemList={gameItemList}/>
+                <ListNft gameItemList={gameItemList} />
               )}
             </Row>
           </div>

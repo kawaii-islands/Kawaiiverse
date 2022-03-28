@@ -89,12 +89,6 @@ const Filter = ({ gameList, setGameSelected, gameSelected, setActiveTab }) => {
 					>
 					</Panel>
 
-					<Panel
-						header="Marketplace"
-						key="3"
-						className="site-collapse-custom-panel"
-					>
-					</Panel>
 				</Collapse>
 			</div>
 		</div>

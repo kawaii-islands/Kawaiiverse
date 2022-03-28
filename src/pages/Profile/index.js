@@ -104,7 +104,7 @@ const Profile = () => {
             gameSelected={gameSelected}
           />
         )}
-        <Row>
+        <Row className={cx("row")}>
           <Col md={6} className={cx("left")}>
             <Filter
               setIsGameTab={setIsGameTab}

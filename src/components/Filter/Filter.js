@@ -11,6 +11,25 @@ import { useNavigate } from "react-router-dom";
 const { Panel } = Collapse;
 const cx = cn.bind(styles);
 
+const tab = [
+	{
+		key: 0,
+		path: '',
+	},
+	{
+		key: 1,
+		path: 'game',
+	},
+	{
+		key: 2,
+		path: 'store',
+	},
+	{
+		key: 3,
+		path: 'marketplace',
+	}
+]
+
 const Filter = ({ gameList, setGameSelected, gameSelected, setActiveTab }) => {
 	const navigate = useNavigate();
 
@@ -20,9 +39,10 @@ const Filter = ({ gameList, setGameSelected, gameSelected, setActiveTab }) => {
 	};
 
 	const handleNavigateProfile = (key) => {
-		console.log('key :>> ', key);
 		let tab = key.slice(-1);
 		setActiveTab(parseInt(tab));
+		// console.log('key :>> ', tab[key].path);
+		// navigate(`/profile/${tab[key].path}`);
 	}
 
 	return (

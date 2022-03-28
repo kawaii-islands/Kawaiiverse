@@ -57,7 +57,10 @@ const ViewNFT = ({ gameSelected }) => {
 					listNftByContract.length > 0 ?
 						listNftByContract.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((item, index) => (
 							<Col xs={24} sm={12} md={8} key={index}>
-								<NFTItem data={item} />
+								<NFTItem
+									data={item}
+									handleNavigation={() => navigate(`/view-nft/1`)}
+								/>
 							</Col>
 						)) : (
 							<div style={{ margin: '0 auto' }}>

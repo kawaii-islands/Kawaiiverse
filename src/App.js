@@ -18,6 +18,7 @@ const Home = React.lazy(() => import("src/pages/Home/index.js"));
 const Store = React.lazy(() => import("src/pages/Store/index.js"));
 const NFTDetail = React.lazy(() => import("src/pages/NFTDetail/index.js"));
 const Profile = React.lazy(() => import("src/pages/Profile/index"));
+const MintNFTDetail = React.lazy(() => import("src/pages/Profile/Game/NFTDetail/NFTDetail"));
 
 
 function App() {
@@ -51,6 +52,8 @@ function App() {
 								<Route index element={<Profile />} />
 								<Route path=":tab" element={<Profile />} />
 							</Route>
+
+							<Route path="view-nft" element={<MintNFTDetail />} />
 						</Routes>
 					</Suspense>
 				</Router>

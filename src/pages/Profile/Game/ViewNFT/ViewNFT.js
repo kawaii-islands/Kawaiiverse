@@ -3,7 +3,7 @@ import styles from "./ViewNFT.module.scss";
 import cn from "classnames/bind";
 import ListSkeleton from "src/components/ListSkeleton/ListSkeleton";
 import NFTItem from "src/components/NFTItem/NFTItem";
-import { Col, Row } from "antd";
+import { Col, Empty, Pagination, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -11,12 +11,13 @@ const cx = cn.bind(styles);
 
 const URL = "http://159.223.81.170:3000";
 
-
+const pageSize = 6;
 
 const ViewNFT = ({ gameSelected }) => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 	const [listNftByContract, setListNftByContract] = useState();
+	const [currentPage, setCurrentPage] = useState(1);
 
 	useEffect(() => {
 		getListNftByContract();
@@ -37,19 +38,47 @@ const ViewNFT = ({ gameSelected }) => {
 		}
 	};
 
+	const itemRender = (current, type, originalElement) => {
+		if (type === "prev") {
+			return <span style={{ color: "#FFFFFF" }}>Prev</span>;
+		}
+		if (type === "next") {
+			return <span style={{ color: "#FFFFFF" }}>Next</span>;
+		}
+		return originalElement;
+	};
+
 	return (
 		<div className={cx("view-nft")}>
 			<Row gutter={[20, 20]}>
 				{loading ? (
 					<ListSkeleton />
 				) : (
-					listNftByContract.map((item, index) => (
-						<Col xs={24} sm={12} md={8} key={index}>
-							<NFTItem data={item} />
-						</Col>
-					))
+					listNftByContract.length > 0 ?
+						listNftByContract.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((item, index) => (
+							<Col xs={24} sm={12} md={8} key={index}>
+								<NFTItem data={item} />
+							</Col>
+						)) : (
+							<div style={{ margin: '0 auto' }}>
+								<Empty />
+							</div>
+						)
 				)}
 			</Row>
+
+			{listNftByContract?.length > 0 && (
+				<div className={cx("pagination")}>
+					<Pagination
+						pageSize={pageSize}
+						showSizeChanger={false}
+						current={currentPage}
+						total={listNftByContract?.length}
+						onChange={(page) => setCurrentPage(page)}
+						itemRender={itemRender}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };

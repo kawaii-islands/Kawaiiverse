@@ -38,7 +38,6 @@ const Profile = () => {
 	const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
 	const [activeTab, setActiveTab] = useState(0);
 	const tabParam = useParams();
-	console.log('tabParam :>> ', tabParam);
 
 	useEffect(() => {
 		setLoading(true);

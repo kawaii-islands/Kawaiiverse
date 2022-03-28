@@ -11,6 +11,8 @@ const cx = cn.bind(styles);
 
 const URL = "http://159.223.81.170:3000";
 
+
+
 const ViewNFT = ({ gameSelected }) => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);

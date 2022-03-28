@@ -17,12 +17,7 @@ import Messages from "./components/Messages";
 const Home = React.lazy(() => import("src/pages/Home/index.js"));
 const Store = React.lazy(() => import("src/pages/Store/index.js"));
 const NFTDetail = React.lazy(() => import("src/pages/NFTDetail/index.js"));
-
 const Profile = React.lazy(() => import("src/pages/Profile/index"));
-const StoreProfile = React.lazy(() => import("src/pages/Profile/Store/index"));
-const CreateGame = React.lazy(() => import("src/pages/Profile/CreateGame/CreateGame"));
-const Game = React.lazy(() => import("src/pages/Profile/Game/index"));
-const Marketplace = React.lazy(() => import("src/pages/Profile/Marketplace/index"));
 
 
 function App() {
@@ -54,10 +49,7 @@ function App() {
 
 							<Route path="profile">
 								<Route index element={<Profile />} />
-								<Route path="game" element={<Game />} />
-								<Route path="create-game" element={<CreateGame />} />
-								<Route path="store" element={<StoreProfile />} />
-								<Route path="marketplace" element={<Marketplace />} />
+								<Route path=":tab" element={<Profile />} />
 							</Route>
 						</Routes>
 					</Suspense>

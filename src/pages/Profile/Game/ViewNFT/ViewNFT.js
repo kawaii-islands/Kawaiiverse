@@ -43,7 +43,7 @@ const ViewNFT = ({ gameSelected }) => {
 				) : (
 					listNftByContract.map((item, index) => (
 						<Col xs={24} sm={12} md={8} key={index}>
-							<NFTItem data={item} onClick={() => navigate(`/profile/view-nft/:id`)} />
+							<NFTItem data={item} />
 						</Col>
 					))
 				)}

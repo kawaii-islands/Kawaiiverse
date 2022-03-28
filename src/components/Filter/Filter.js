@@ -24,6 +24,7 @@ const tab = [
 
 const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveTab }) => {
 	const navigate = useNavigate();
+	const [show, setShow] = useState(true);
 
 	const handleGameClick = (address, idx) => {
 		console.log(address);
@@ -55,12 +56,14 @@ const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveT
 						navigate(`/profile/${tab.path}`);
 					}}
 				>
-					<div className={cx("collapse-title")}>
+					<div className={cx("collapse-title")} onClick={() => setShow(!show)}>
 						<span>{tab.name}</span>
-						{activeTab === tab.key ? <DownOutlined /> : <RightOutlined />}
+						{activeTab === tab.key && show ? (
+							<DownOutlined style={{ fontSize: '14px' }} />
+						) : (<RightOutlined style={{ fontSize: '14px' }} />)}
 					</div>
 
-					{activeTab === tab.key && (
+					{activeTab === tab.key && show && (
 						<div className={cx("panel")}>
 							{gameList?.map((gameName, idx) => (
 								<div

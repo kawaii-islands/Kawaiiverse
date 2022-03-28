@@ -24,106 +24,98 @@ const cx = cn.bind(styles);
 const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
 
 const Profile = () => {
-  const { account } = useWeb3React();
-  const [loading, setLoading] = useState(true);
-  const [isMintNFT, setIsMintNFT] = useState(true);
-  const [isGameTab, setIsGameTab] = useState(false);
-  const [openFilterModal, setOpenFilterModal] = useState(false);
-  const [gameList, setGameList] = useState([]);
-  const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
-  const [activeTab, setActiveTab] = useState(2);
+	const { account } = useWeb3React();
+	const [loading, setLoading] = useState(true);
+	const [isMintNFT, setIsMintNFT] = useState(true);
+	const [isGameTab, setIsGameTab] = useState(false);
+	const [openFilterModal, setOpenFilterModal] = useState(false);
+	const [gameList, setGameList] = useState([]);
+	const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
+	const [activeTab, setActiveTab] = useState(0);
 
-  const getActiveTab = tab => {
-    switch (tab) {
-      case 0:
-        return (
-          <CreateGame
-            gameList={gameList}
-            setGameSelected={setGameSelected}
-            gameSelected={gameSelected}
-            logInfo={logInfo}
-          />
-        );
-      case 1:
-        return <Game />;
-      case 2:
-        return <StoreProfile />;
-      case 3:
-        return <Marketplace />;
-      default:
-        return (
-          <CreateGame
-            gameList={gameList}
-            setGameSelected={setGameSelected}
-            gameSelected={gameSelected}
-            logInfo={logInfo}
-          />
-        );
-    }
-  };
+	const getActiveTab = tab => {
+		switch (tab) {
+			case 1:
+				return <Game />;
+			case 2:
+				return <StoreProfile />;
+			case 3:
+				return <Marketplace />;
+			default:
+				return (
+					<CreateGame
+						gameList={gameList}
+						setGameSelected={setGameSelected}
+						gameSelected={gameSelected}
+						logInfo={logInfo}
+					/>
+				);
+		}
+	};
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
+	useEffect(() => {
+		setTimeout(() => {
+			setLoading(false);
+		}, 1500);
+	}, []);
 
-  useEffect(() => {
-    logInfo();
-  }, [account]);
+	useEffect(() => {
+		logInfo();
+	}, [account]);
 
-  const logInfo = async () => {
-    if (account) {
-      setGameList([]);
-      try {
-        const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
-        for (let index = 0; index < totalGame; index++) {
-          let gameAddress = await read("nftOfUser", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
-          let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
-          setGameList(gameList => [...gameList, { gameAddress, gameName }]);
-        }
-        console.log(gameList);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
+	const logInfo = async () => {
+		if (account) {
+			setGameList([]);
+			try {
+				const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
+				for (let index = 0; index < totalGame; index++) {
+					let gameAddress = await read("nftOfUser", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
+					let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
+					setGameList(gameList => [...gameList, { gameAddress, gameName }]);
+				}
+				console.log(gameList);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	};
 
-  return loading ? (
-    <LoadingPage />
-  ) : (
-    <MainLayout>
-      <div className={cx("profile")}>
-        {openFilterModal && (
-          <FilterMobile
-            setOpenFilterModal={setOpenFilterModal}
-            showCreateGameButton={true}
-            setIsGameTab={setIsGameTab}
-            gameList={gameList}
-            setGameSelected={setGameSelected}
-            gameSelected={gameSelected}
-          />
-        )}
-        <Row>
-          <Col md={6} className={cx("left")}>
-            <Filter
-              setIsGameTab={setIsGameTab}
-              showCreateGameButton={true}
-              gameList={gameList}
-              setGameSelected={setGameSelected}
-              gameSelected={gameSelected}
-              setActiveTab={setActiveTab}
-            />
-          </Col>
+	return loading ? (
+		<LoadingPage />
+	) : (
+		<MainLayout>
+			<div className={cx("profile")}>
+				{openFilterModal && (
+					<FilterMobile
+						setOpenFilterModal={setOpenFilterModal}
+						setIsGameTab={setIsGameTab}
+						gameList={gameList}
+						setGameSelected={setGameSelected}
+						gameSelected={gameSelected}
+						activeTab={activeTab}
+						setActiveTab={setActiveTab}
+					/>
+				)}
+				<Row className={cx("row")}>
+					<Col md={6} className={cx("left")}>
+						<Filter
+							setIsGameTab={setIsGameTab}
+							gameList={gameList}
+							setGameSelected={setGameSelected}
+							gameSelected={gameSelected}
+							activeTab={activeTab}
+							setActiveTab={setActiveTab}
+						/>
+					</Col>
 
-          <Col offset={1} md={17} className={cx("right-wrapper")}>
-            {getActiveTab(activeTab)}
-          </Col>
-        </Row>
-      </div>
-      <Outlet />
-    </MainLayout>
-  );
+					<Col offset={1} md={17} className={cx("right-wrapper")}>
+						{getActiveTab(activeTab)}
+					</Col>
+				</Row>
+			</div>
+			<Outlet />
+		</MainLayout>
+	);
 };
 
 export default Profile;

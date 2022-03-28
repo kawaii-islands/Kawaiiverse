@@ -26,7 +26,6 @@ const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
 const Profile = () => {
 	const { account } = useWeb3React();
 	const [loading, setLoading] = useState(true);
-	const [isMintNFT, setIsMintNFT] = useState(true);
 	const [isGameTab, setIsGameTab] = useState(false);
 	const [openFilterModal, setOpenFilterModal] = useState(false);
 	const [gameList, setGameList] = useState([]);
@@ -36,7 +35,7 @@ const Profile = () => {
 	const getActiveTab = tab => {
 		switch (tab) {
 			case 1:
-				return <Game />;
+				return <Game gameSelected={gameSelected} />;
 			case 2:
 				return <StoreProfile />;
 			case 3:

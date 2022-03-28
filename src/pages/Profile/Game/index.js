@@ -19,38 +19,16 @@ import FilterMobile from "src/components/FilterMobile/FilterMobile";
 
 const cx = cn.bind(styles);
 
-const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
-
-const Game = () => {
+const Game = ({gameSelected }) => {
 	const { account } = useWeb3React();
 	const [loading, setLoading] = useState(true);
 	const [isMintNFT, setIsMintNFT] = useState(true);
-	const [isGameTab, setIsGameTab] = useState(false);
-	const [openFilterModal, setOpenFilterModal] = useState(false);
-	const [gameList, setGameList] = useState([]);
-	const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
 
 	useEffect(() => {
 		setTimeout(() => {
 			setLoading(false);
 		}, 1500);
 	}, []);
-
-	useEffect(() => {
-		logInfo();
-	}, [account]);
-
-	const logInfo = async () => {
-		if (account) {
-			const totalGame = await read("nftOfUserLength", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account]);
-			for (let index = 0; index < totalGame; index++) {
-				let gameAddress = await read("nftOfUser", BSC_CHAIN_ID, FACTORY_ADDRESS, FACTORY_ABI, [account, index]);
-				let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
-				setGameList(gameList => [...gameList, { gameAddress, gameName }]);
-			}
-			console.log(gameList);
-		}
-	};
 
 	return (
 		<div className={cx("profile")}>

@@ -57,7 +57,7 @@ const SellItemNFT = ({ gameSelected }) => {
 
   const createItem = async () => {
     try {
-      await write("createItem", library.provider, gameSelected, KAWAIIVERSE_NFT1155_ABI, [account, 1, 30], {
+      await write("createItem", library.provider, gameSelected, KAWAIIVERSE_NFT1155_ABI, [account, 123, 30], {
         from: account,
       });
     } catch (error) {

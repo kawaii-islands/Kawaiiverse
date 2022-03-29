@@ -21,7 +21,7 @@ const ViewItemNFT = ({ gameSelected }) => {
   const { account } = useWeb3React();
   const [gameList, setGameList] = useState([]);
   const [gameItemList, setGameItemList] = useState([]);
-  const [loadingListNFT, setLoadingListNFT] = useState(true);
+  const [loadingListNFT, setLoadingListNFT] = useState(false);
   const [allItemFromGame, setAllItemFromGame] = useState([]);
   useEffect(() => {
     logGameList();
@@ -32,10 +32,15 @@ const ViewItemNFT = ({ gameSelected }) => {
   }, [gameSelected]);
 
   useEffect(() => {
+    console.log("1.5");
     if (gameList.length > 0 && allItemFromGame.length > 0) {
       console.log(gameList, allItemFromGame);
       logItemList();
+    } else {
+      console.log("2.5");
+      setGameItemList([]);
     }
+    console.log("3.5");
   }, [gameList, allItemFromGame]);
 
   const navigate = useNavigate();
@@ -96,6 +101,7 @@ const ViewItemNFT = ({ gameSelected }) => {
     setLoadingListNFT(true);
     // setGameItemList([]);
     let list = [];
+    console.log("1");
     const tmpGameArray = [...Array(gameSelected ? 1 : gameList.length).keys()];
     try {
       const gameListData = await Promise.all(
@@ -107,7 +113,7 @@ const ViewItemNFT = ({ gameSelected }) => {
             KAWAII_STORE_ABI,
             [gameSelected ? gameSelected : gameList[idx].gameAddress],
           );
-
+          console.log("2");
           const tmpItemArray = Array.from({ length: gameItemLength }, (v, i) => i);
           const gameItemData = await Promise.all(
             tmpItemArray.map(async (nftId, index) => {

@@ -96,6 +96,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
 
 		} catch (error) {
 			console.log(error);
+			setLoading(false)
 			toast.error(error.message || "An error occurred!");
 		}
 	};

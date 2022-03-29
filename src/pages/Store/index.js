@@ -38,18 +38,11 @@ const Store = () => {
   const [loadingListNFT, setLoadingListNFT] = useState(true);
   const [totalGameAmount, setTotalGameAmount] = useState(0);
   const [gameSelected, setGameSelected] = useState([]);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
-    setTimeout(() => {
-      setLoadingListNFT(false);
-    }, 4000);
-  }, []);
-
+  
+  
   useEffect(() => {
     logInfo();
+    
   }, [totalGameAmount, account]);
 
   useEffect(() => {
@@ -57,8 +50,6 @@ const Store = () => {
   }, [gameSelected, gameList]);
 
   const logInfo = async () => {
-    console.log("logInfo");
-    console.log(account);
     if (account) {
       try {
         const totalGame = await read(
@@ -69,24 +60,25 @@ const Store = () => {
           [],
         );
         setGameList([]);
-        console.log("total game:" + totalGame);
         // const tmpArray = [...Array(totalGame.length).keys()];
         const tmpArray = Array.from({ length: totalGame }, (v, i) => i);
-        console.log(tmpArray);
+        
         try {
+          let lists = [];
           const gameListData = Promise.all(
             tmpArray.map(async (nftId, index) => {
               let gameAddress = await read("listNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
                 index,
               ]);
-              console.log("GameAddress", gameAddress);
               let gameName = await read("name", BSC_CHAIN_ID, gameAddress, NFT1155_ABI, []);
-              console.log("GameName", gameName);
-              setGameList(gameList => [...gameList, { gameAddress, gameName }]);
+              lists.push({ gameAddress, gameName })
             }),
-          );
+          ).then(() => {
+            setGameList(lists);
+            setTotalGameAmount(gameList.length);
 
-          setTotalGameAmount(gameList.length);
+          }
+          );
         } catch (error) {
           console.log(error);
           toast.error(error.message || "An error occurred!");
@@ -96,6 +88,7 @@ const Store = () => {
         toast.error(error.message || "An error occurred!");
       }
     }
+    setLoading(false)
   };
 
   const logGameData = async () => {
@@ -103,7 +96,7 @@ const Store = () => {
     setGameItemList([]);
     const tmpGameArray = [...Array(gameSelected.length ? gameSelected.length : gameList.length).keys()];
     try {
-      console.log(tmpGameArray);
+
       const gameListData = Promise.all(
         tmpGameArray.map(async (nftId, idx) => {
           let gameItemLength = await read(
@@ -113,19 +106,20 @@ const Store = () => {
             KAWAII_STORE_ABI,
             [gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress],
           );
-          const tmpItemArray = [...Array(gameItemLength).keys()];
-          console.log(tmpItemArray);
+          const tmpItemArray = Array.from({ length: gameItemLength }, (v, i) => i);
           try {
+            let list = [];
             const gameItemData = Promise.all(
               tmpItemArray.map(async (nftId, index) => {
                 let gameItem = await read("dataNFT1155s", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
                   gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress,
                   index,
                 ]);
-                console.log(gameItem);
-                setGameItemList(gameItemList => [...gameItemList, gameItem]);
+                list.push(gameItem);
               }),
-            );
+            ).then(() => {
+              setGameItemList(list)
+            });
           } catch (error) {
             console.log(error);
             toast.error(error.message || "An error occurred!");
@@ -244,11 +238,6 @@ const Store = () => {
               {loadingListNFT ? (
                 <ListSkeleton />
               ) : (
-                // gameItemList.map((item, index) => (
-                //   <Col xs={24} sm={12} md={8} key={index}>
-                //     <NFTItem data={item} onClick={() => navigate(`/store/1`)} />
-                //   </Col>
-                // ))
                 <ListNft gameItemList={gameItemList} />
               )}
             </Row>

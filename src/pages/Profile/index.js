@@ -19,9 +19,9 @@ import Marketplace from "./Marketplace/index";
 
 import FilterMobile from "src/components/FilterMobile/FilterMobile";
 import { Outlet } from "react-router-dom";
+import { KAWAII1155_ADDRESS } from "src/consts/constant";
 const cx = cn.bind(styles);
 
-const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
 
 const Profile = () => {
   const { account } = useWeb3React();

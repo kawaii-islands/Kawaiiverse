@@ -7,7 +7,7 @@ import styles from "./Item.module.scss";
 import noImage from "src/assets/images/no-image.png";
 import {Pagination } from "antd";
 const cx = cn.bind(styles);
-
+const ITEM_PER_PAGE = 20;
 const Item = ({ list, listSell, setListSell }) => {
   const [searchString, setSearchString] = useState("");
   const [listSearch, setListSearch] = useState([]);
@@ -16,10 +16,12 @@ const Item = ({ list, listSell, setListSell }) => {
     price: 0,
     quantity: 0,
   });
-  const [totalPage, setTotalPage] = useState(1);
+  // const [totalPage, setTotalPage] = useState(1);
   const [current, setCurrent] = useState(1)
+  
   const handleChange = (page) => {
-    
+    console.log(page)
+    setCurrent(page);
   };
   const itemRender = (current, type, originalElement) => {
     if (type === "prev") {
@@ -99,13 +101,12 @@ const Item = ({ list, listSell, setListSell }) => {
 
     setListSell(newList);
   };
-  list.map((item) => {
-    console.log(item.supply)
-  })
+  
   let displayList = searchString.length > 0 ? listSearch : list;
   if(nft._id){
     displayList = []
   }
+  console.log("current : ", current);
   return (
     <>
       <Row className={cx("table-body-header")}>
@@ -167,20 +168,24 @@ const Item = ({ list, listSell, setListSell }) => {
         </Col>
       </Row>
       <Row className={cx("result")}>
-        {(displayList.length> 0 ) ? displayList.map(nft => (
+        {(displayList.length > 0 ) ? displayList.slice((current - 1) * ITEM_PER_PAGE, current * ITEM_PER_PAGE - 1).map(nft => (
           <div className={cx("result-nft")} onClick={() => addNft(nft._id)} key={nft._id}>
             {/* <CloseOutlined className={cx("result-nft-close")}/> */}
             <img src={nft.imageUrl || noImage} alt="" />
           </div>
         )): (!nft._id ? "No result" : "")}
       </Row>
-      {/* <Pagination 
+      {!nft._id && <Pagination 
       showSizeChanger={false}
       defaultCurrent={1}
       total={displayList.length}
       responsive={true}
-      pageSize={20}
-      itemRender={itemRender}/> */}
+      current={current}
+      pageSize={ITEM_PER_PAGE}
+      itemRender={itemRender}
+      onChange={handleChange}
+      
+      />}
     </>
   );
 };

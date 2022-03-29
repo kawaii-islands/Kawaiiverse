@@ -140,7 +140,16 @@ const SellItemNFT = ({ gameSelected }) => {
           stateMutability: "nonpayable",
           type: "function",
         },
-        [account, gameSelected, listSell[0].tokenId, listSell[0].quantity, Number(listSell[0].price), v, r, s],
+        [
+          account,
+          gameSelected,
+          listSell[0].tokenId,
+          listSell[0].quantity,
+          web3.utils.toWei(listSell[0].price),
+          v,
+          r,
+          s,
+        ],
       );
       console.log(
         account,
@@ -208,7 +217,7 @@ const SellItemNFT = ({ gameSelected }) => {
     const signature = await sign(account, data, library.provider);
     return signature;
   };
- 
+
   return (
     <div className={cx("table")}>
       <Row className={cx("table-header")}>
@@ -217,13 +226,11 @@ const SellItemNFT = ({ gameSelected }) => {
         </Col>
         <Col span={4}>Price/NFT</Col>
         <Col span={7}>Quantity</Col>
-        <Col span={1}>
-          {/* <input type="checkbox" /> */}
-        </Col>
+        <Col span={1}>{/* <input type="checkbox" /> */}</Col>
       </Row>
       <div className={cx("table-body")}>
         {new Array(rowItem).fill().map(i => (
-          <Item list={list} listSell={listSell} setListSell={setListSell} key={`row-item-${i}`}/>
+          <Item list={list} listSell={listSell} setListSell={setListSell} key={`row-item-${i}`} />
         ))}
       </div>
       <div className={cx("wrapper-btn")}>

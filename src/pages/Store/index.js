@@ -51,6 +51,7 @@ const Store = () => {
 
   const logInfo = async () => {
     if (account) {
+      let lists = [];
       try {
         const totalGame = await read(
           "lengthListNFT1155",
@@ -64,7 +65,7 @@ const Store = () => {
         const tmpArray = Array.from({ length: totalGame }, (v, i) => i);
         
         try {
-          let lists = [];
+          
           const gameListData = Promise.all(
             tmpArray.map(async (nftId, index) => {
               let gameAddress = await read("listNFT1155", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
@@ -74,8 +75,10 @@ const Store = () => {
               lists.push({ gameAddress, gameName })
             }),
           ).then(() => {
+            console.log(lists.length)
+
             setGameList(lists);
-            setTotalGameAmount(gameList.length);
+            setTotalGameAmount(lists.length);
 
           }
           );
@@ -94,10 +97,11 @@ const Store = () => {
   const logGameData = async () => {
     setLoadingListNFT(true);
     setGameItemList([]);
+    let list = [];
     const tmpGameArray = [...Array(gameSelected.length ? gameSelected.length : gameList.length).keys()];
     try {
 
-      const gameListData = Promise.all(
+      const gameListData = await Promise.all(
         tmpGameArray.map(async (nftId, idx) => {
           let gameItemLength = await read(
             "lengthSellNFT1155",
@@ -107,9 +111,9 @@ const Store = () => {
             [gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress],
           );
           const tmpItemArray = Array.from({ length: gameItemLength }, (v, i) => i);
-          try {
-            let list = [];
-            const gameItemData = Promise.all(
+         
+            
+            const gameItemData = await Promise.all(
               tmpItemArray.map(async (nftId, index) => {
                 let gameItem = await read("dataNFT1155s", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
                   gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress,
@@ -118,12 +122,10 @@ const Store = () => {
                 list.push(gameItem);
               }),
             ).then(() => {
+              console.log(list.length)
               setGameItemList(list)
             });
-          } catch (error) {
-            console.log(error);
-            toast.error(error.message || "An error occurred!");
-          }
+         
         }),
       );
     } catch (error) {

@@ -74,9 +74,11 @@ const ViewItemNFT = () => {
   const logGameData = async () => {
     setLoadingListNFT(true);
     setGameItemList([]);
+    let list = [];
     const tmpGameArray = [...Array(gameSelected.length ? gameSelected.length : gameList.length).keys()];
     try {
-      const gameListData = Promise.all(
+
+      const gameListData = await Promise.all(
         tmpGameArray.map(async (nftId, idx) => {
           let gameItemLength = await read(
             "lengthSellNFT1155",
@@ -86,12 +88,10 @@ const ViewItemNFT = () => {
             [gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress],
           );
           const tmpItemArray = Array.from({ length: gameItemLength }, (v, i) => i);
-          
-          try {
-            let list = [];
-            const gameItemData = Promise.all(
+         
+            
+            const gameItemData = await Promise.all(
               tmpItemArray.map(async (nftId, index) => {
-                console.log(index);
                 let gameItem = await read("dataNFT1155s", BSC_CHAIN_ID, KAWAIIVERSE_STORE_ADDRESS, KAWAII_STORE_ABI, [
                   gameSelected.length ? gameSelected[idx].gameAddress : gameList[idx].gameAddress,
                   index,
@@ -99,12 +99,10 @@ const ViewItemNFT = () => {
                 list.push(gameItem);
               }),
             ).then(() => {
-              setGameList(list);
+              console.log(list.length)
+              setGameItemList(list)
             });
-          } catch (error) {
-            console.log(error);
-            toast.error(error.message || "An error occurred!");
-          }
+         
         }),
       );
     } catch (error) {

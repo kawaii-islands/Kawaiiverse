@@ -8,7 +8,7 @@ import noImage from "src/assets/images/no-image.png";
 import {Pagination } from "antd";
 const cx = cn.bind(styles);
 const ITEM_PER_PAGE = 20;
-const Item = ({ list, listSell, setListSell }) => {
+const Item = ({ list, listSell, setListSell,setCanAdd }) => {
   const [searchString, setSearchString] = useState("");
   const [listSearch, setListSearch] = useState([]);
   const [nft, setNft] = useState({});
@@ -20,7 +20,6 @@ const Item = ({ list, listSell, setListSell }) => {
   const [current, setCurrent] = useState(1)
   
   const handleChange = (page) => {
-    console.log(page)
     setCurrent(page);
   };
   const itemRender = (current, type, originalElement) => {
@@ -53,7 +52,8 @@ const Item = ({ list, listSell, setListSell }) => {
     });
     setListSearch([]);
     setListSell([...listSell, nft]);
-    setSearchString("")
+    setSearchString("");
+    setCanAdd(true);
   };
   const handleInput = e => {
     if(!nft._id){
@@ -101,12 +101,20 @@ const Item = ({ list, listSell, setListSell }) => {
 
     setListSell(newList);
   };
-  
+  const deleteRow = () => {
+    const id = nft._id;
+    let index = listSell.findIndex(x => x._id === id);
+    let newList = [...listSell];
+    newList.splice(index, index);
+    
+    setListSell(newList)
+    setNft({});
+    setInfo({ price: 0, quantity: 0 });
+  }
   let displayList = searchString.length > 0 ? listSearch : list;
   if(nft._id){
     displayList = []
   }
-  console.log("current : ", current);
   return (
     <>
       <Row className={cx("table-body-header")}>
@@ -115,10 +123,8 @@ const Item = ({ list, listSell, setListSell }) => {
             <div className={cx("nft-image")}>
               <CloseOutlined
                 className={cx("nft-image-close")}
-                onClick={() => {
-                  setNft({});
-                  setInfo({ price: 0, quantity: 0 });
-                }}
+               
+                onClick={deleteRow}
               />
 
               <img src={nft.imageUrl || noImage} alt="" />

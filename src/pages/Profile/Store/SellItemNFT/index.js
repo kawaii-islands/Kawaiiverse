@@ -20,6 +20,7 @@ const web3 = new Web3(BSC_rpcUrls);
 const SellItemNFT = ({ gameSelected }) => {
   const [list, setList] = useState([]);
   const [rowItem, setRowItem] = useState(1);
+  const [canAdd, setCanAdd] = useState(false);
   const [listSell, setListSell] = useState([]);
   const { account, library } = useWeb3React();
   const [isApprovedForAll, setIsApprovedForAll] = useState(false);
@@ -52,7 +53,9 @@ const SellItemNFT = ({ gameSelected }) => {
   };
 
   const addItem = () => {
+    if(!canAdd) return;
     setRowItem(rowItem + 1);
+    setCanAdd(false);
   };
 
   const createItem = async () => {
@@ -229,8 +232,10 @@ const SellItemNFT = ({ gameSelected }) => {
         <Col span={1}>{/* <input type="checkbox" /> */}</Col>
       </Row>
       <div className={cx("table-body")}>
-        {new Array(rowItem).fill().map(i => (
-          <Item list={list} listSell={listSell} setListSell={setListSell} key={`row-item-${i}`} />
+        {new Array(rowItem).fill().map((i,idx) => (
+          <Item 
+          setCanAdd={setCanAdd}
+          list={list} listSell={listSell} setListSell={setListSell} key={`row-item-${idx}`}/>
         ))}
       </div>
       <div className={cx("wrapper-btn")}>

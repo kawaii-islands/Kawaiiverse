@@ -7,7 +7,7 @@ import { BSC_CHAIN_ID } from "src/consts/blockchain";
 import { KAWAIIVERSE_STORE_ADDRESS } from "src/consts/address";
 import { toast } from "react-toastify";
 import { useWeb3React } from "@web3-react/core";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router";
 import { read } from "src/services/web3";
 import ListNft from "src/components/ListNft/ListNft";
 const cx = cn.bind(styles);
@@ -29,7 +29,7 @@ const ViewItemNFT = () => {
   useEffect(() => {
     logGameData();
   }, [gameSelected, gameList]);
-  const navigate = useNavigate();
+  const history = useHistory();
   const logInfo = async () => {
     if (account) {
       try {

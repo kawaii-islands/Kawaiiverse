@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './MintNFTBox.module.scss';
 import cn from 'classnames/bind';
 import { Col, Row, Spin } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from "react-router";
 import subtractIcon from 'src/assets/icons/subtract.svg';
 import uploadImageIcon from 'src/assets/icons/uploadImage.svg';
 import plusCircleIcon from 'src/assets/icons/plus_circle.svg';
@@ -55,7 +55,7 @@ const MintNFTBox = ({
 	openMintNFTBox
 
 }) => {
-	const navigate = useNavigate();
+	const history = useHistory();
 	const [loading, setLoading] = useState(true);
 	const [loadingUploadImg, setLoadingUploadImg] = useState(false);
 	const [listAttribute, setListAttribute] = useState([data.attributes]);

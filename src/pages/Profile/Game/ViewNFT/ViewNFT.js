@@ -4,17 +4,16 @@ import cn from "classnames/bind";
 import ListSkeleton from "src/components/ListSkeleton/ListSkeleton";
 import NFTItem from "src/components/NFTItem/NFTItem";
 import { Col, Empty, Pagination, Row } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router";
 import axios from "axios";
+import { KAWAIIVERSE_API } from "src/consts/address";
 
 const cx = cn.bind(styles);
-
-const URL = "http://159.223.81.170:3000";
 
 const pageSize = 6;
 
 const ViewNFT = ({ gameSelected }) => {
-	const navigate = useNavigate();
+	const history = useHistory();
 	const [loading, setLoading] = useState(true);
 	const [listNftByContract, setListNftByContract] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +26,7 @@ const ViewNFT = ({ gameSelected }) => {
 		setLoading(true);
 
 		try {
-			const res = await axios.get(`${URL}/v1/nft/${gameSelected}`);
+			const res = await axios.get(`${KAWAIIVERSE_API}/v1/nft/${gameSelected}`);
 
 			if (res.status === 200) {
 				setListNftByContract(res.data.data);
@@ -59,7 +58,10 @@ const ViewNFT = ({ gameSelected }) => {
 							<Col xs={24} sm={12} md={8} key={index}>
 								<NFTItem
 									data={item}
-									handleNavigation={() => navigate(`/view-nft/1`)}
+									handleNavigation={() => history.push({
+										pathname: `/profile/game/${gameSelected}/${item.tokenId}`,
+										state: { gameSelected }
+									})}
 								/>
 							</Col>
 						)) : (

@@ -18,7 +18,7 @@ import StoreProfile from "./Store/index";
 import Marketplace from "./Marketplace/index";
 
 import FilterMobile from "src/components/FilterMobile/FilterMobile";
-import { Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const cx = cn.bind(styles);
 
 const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
@@ -121,7 +121,6 @@ const Profile = () => {
 					</Col>
 				</Row>
 			</div>
-			<Outlet />
 		</MainLayout>
 	);
 };

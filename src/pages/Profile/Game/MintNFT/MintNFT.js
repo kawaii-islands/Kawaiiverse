@@ -9,7 +9,6 @@ import { useWeb3React } from "@web3-react/core";
 import web3 from "web3";
 import { splitSignature } from "@ethersproject/bytes";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const cx = cn.bind(styles);
 const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";

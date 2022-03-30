@@ -10,10 +10,8 @@ import web3 from "web3";
 import { splitSignature } from "@ethersproject/bytes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import {URL,KAWAII1155_ADDRESS} from "src/consts/constant";
 const cx = cn.bind(styles);
-const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
-const URL = "http://159.223.81.170:3000";
 
 const MintNFT = ({ setIsMintNFT, gameSelected }) => {
   const { account, library } = useWeb3React();
@@ -145,6 +143,7 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
       }
     } catch (err) {
       console.log(err.response);
+      setLoadingSubmit(false);
     }
   };
 

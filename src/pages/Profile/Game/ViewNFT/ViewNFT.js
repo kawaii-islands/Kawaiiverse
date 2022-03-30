@@ -6,10 +6,9 @@ import NFTItem from "src/components/NFTItem/NFTItem";
 import { Col, Empty, Pagination, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import {URL} from "src/consts/constant";
 const cx = cn.bind(styles);
 
-const URL = "http://159.223.81.170:3000";
 
 const pageSize = 6;
 

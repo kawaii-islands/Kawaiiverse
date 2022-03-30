@@ -22,7 +22,7 @@ const NFTItem = ({ onClick, data, handleNavigation }) => {
         }}
       >
         <div className={cx("tag")}>
-          {data.amount - data.alreadySale}/{data.amount} Left
+          {data.amount - data.alreadySale}/{data.amount || data.supply} Left
         </div>
       </div>
 

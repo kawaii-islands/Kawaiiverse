@@ -7,7 +7,7 @@ import { Col, Row } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from '@mui/material';
 import { useParams, useHistory } from "react-router-dom";
-import { KAWAIIVERSE_API } from 'src/consts/address';
+import { URL } from 'src/consts/constant';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import LoadingPage from 'src/components/LoadingPage/LoadingPage';
@@ -28,7 +28,7 @@ const NFTDetail = () => {
 	const getNftInfo = async () => {
 		setLoading(true);
 		try {
-			const res = await axios.get(`${KAWAIIVERSE_API}/v1/nft/${address}/${nftId}`);
+			const res = await axios.get(`${URL}/v1/nft/${address}/${nftId}`);
 			setNftInfo(res.data.data);
 			console.log('res :>> ', res);
 		} catch (error) {

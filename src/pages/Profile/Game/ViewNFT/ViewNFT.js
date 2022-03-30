@@ -6,8 +6,7 @@ import NFTItem from "src/components/NFTItem/NFTItem";
 import { Col, Empty, Pagination, Row } from "antd";
 import { useHistory } from "react-router";
 import axios from "axios";
-import { KAWAIIVERSE_API } from "src/consts/address";
-
+import {URL} from "src/consts/constant";
 const cx = cn.bind(styles);
 
 const pageSize = 6;
@@ -26,7 +25,7 @@ const ViewNFT = ({ gameSelected }) => {
 		setLoading(true);
 
 		try {
-			const res = await axios.get(`${KAWAIIVERSE_API}/v1/nft/${gameSelected}`);
+			const res = await axios.get(`${URL}/v1/nft/${gameSelected}`);
 
 			if (res.status === 200) {
 				setListNftByContract(res.data.data);

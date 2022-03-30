@@ -22,8 +22,11 @@ const NFTItem = ({ onClick, data, handleNavigation }) => {
         }}
       >
         <div className={cx("tag")}>
-          {data.amount - data.alreadySale}/{data.amount} Left
+          {data.amount - data.alreadySale}/{data.amount || data.supply} Left
         </div>
+		{/* <div className={cx("nft-image")}>
+			<img src={data.imageUrl || 'https://images.kawaii.global/kawaii-marketplace-image/items/205002.png'} alt="nft-image"/>
+		</div> */}
       </div>
 
       <div className={cx("bottom")}>

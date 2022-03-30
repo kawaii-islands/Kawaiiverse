@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import cn from "classnames/bind";
 import styles from "./index.module.scss";
-import { Col, Row } from "antd";
+import { Col, Row, Spin } from "antd";
 import { toast } from "react-toastify";
 import Item from "./Item";
 import Web3 from "web3";
@@ -24,6 +24,8 @@ const SellItemNFT = ({ gameSelected }) => {
   const [listSell, setListSell] = useState([]);
   const { account, library } = useWeb3React();
   const [isApprovedForAll, setIsApprovedForAll] = useState(false);
+  const [loadingSellNft, setLoadingSellNft] = useState(false);
+
   useEffect(() => {
     getListNft();
     getAllowance();
@@ -53,27 +55,15 @@ const SellItemNFT = ({ gameSelected }) => {
   };
 
   const addItem = () => {
-    if(!canAdd) return;
+    if (!canAdd) return;
     setRowItem(rowItem + 1);
     setCanAdd(false);
   };
 
-  const createItem = async () => {
-    try {
-      await write("createItem", library.provider, gameSelected, KAWAIIVERSE_NFT1155_ABI, [account, 123, 30], {
-        from: account,
-      });
-    } catch (error) {
-      console.log(error);
-      toast.error(error);
-    }
-  };
-
   const sellNft = async () => {
-    console.log(listSell);
-    console.log(Number(listSell[0].price));
-    if (!isApprovedForAll) {
-      try {
+    setLoadingSellNft(true);
+    try {
+      if (!isApprovedForAll) {
         await write(
           "setApprovalForAll",
           library.provider,
@@ -84,98 +74,86 @@ const SellItemNFT = ({ gameSelected }) => {
             from: account,
           },
         );
-      } catch (error) {
-        console.log(error);
-        toast.error(error);
       }
-    }
-
-    const { r, s, v } = await getSignature();
-    console.log(r, s, v);
-    if (listSell.length == 1) {
-      console.log("1:" + gameSelected);
-      const _data = web3.eth.abi.encodeFunctionCall(
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "sender",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_nftAddress",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "_tokenId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_amount",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_price",
-              type: "uint256",
-            },
-            {
-              internalType: "uint8",
-              name: "v",
-              type: "uint8",
-            },
-            {
-              internalType: "bytes32",
-              name: "r",
-              type: "bytes32",
-            },
-            {
-              internalType: "bytes32",
-              name: "s",
-              type: "bytes32",
-            },
+      const { r, s, v } = await getSignature();
+      console.log(r, s, v);
+      if (listSell.length == 1) {
+        const _data = web3.eth.abi.encodeFunctionCall(
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "sender",
+                type: "address",
+              },
+              {
+                internalType: "address",
+                name: "_nftAddress",
+                type: "address",
+              },
+              {
+                internalType: "uint256",
+                name: "_tokenId",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_amount",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "_price",
+                type: "uint256",
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8",
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32",
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32",
+              },
+            ],
+            name: "saleNFT1155",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+          [
+            account,
+            gameSelected,
+            listSell[0].tokenId,
+            listSell[0].quantity,
+            web3.utils.toWei(listSell[0].price),
+            v,
+            r,
+            s,
           ],
-          name: "saleNFT1155",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        [
-          account,
-          gameSelected,
-          listSell[0].tokenId,
-          listSell[0].quantity,
-          web3.utils.toWei(listSell[0].price),
-          v,
-          r,
-          s,
-        ],
-      );
-      console.log(
-        account,
-        gameSelected,
-        listSell[0].tokenId,
-        listSell[0].quantity,
-        web3.utils.toWei(listSell[0].price),
-        v,
-        r,
-        s,
-      );
-
-      await write(
-        "execute",
-        library.provider,
-        RELAY_ADDRESS,
-        RELAY_ABI,
-        [KAWAIIVERSE_STORE_ADDRESS, _data],
-        { from: account },
-        hash => {
-          console.log(hash);
-        },
-      );
+        );
+        await write(
+          "execute",
+          library.provider,
+          RELAY_ADDRESS,
+          RELAY_ABI,
+          [KAWAIIVERSE_STORE_ADDRESS, _data],
+          { from: account },
+          hash => {
+            console.log(hash);
+          },
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingSellNft(false);
     }
   };
   const getSignature = async () => {
@@ -216,7 +194,6 @@ const SellItemNFT = ({ gameSelected }) => {
       primaryType: "Data",
       message,
     });
-
     const signature = await sign(account, data, library.provider);
     return signature;
   };
@@ -232,21 +209,22 @@ const SellItemNFT = ({ gameSelected }) => {
         <Col span={1}>{/* <input type="checkbox" /> */}</Col>
       </Row>
       <div className={cx("table-body")}>
-        {new Array(rowItem).fill().map((i,idx) => (
-          <Item 
-          setCanAdd={setCanAdd}
-          list={list} listSell={listSell} setListSell={setListSell} key={`row-item-${idx}`}/>
+        {new Array(rowItem).fill().map((i, idx) => (
+          <Item
+            setCanAdd={setCanAdd}
+            list={list}
+            listSell={listSell}
+            setListSell={setListSell}
+            key={`row-item-${idx}`}
+          />
         ))}
       </div>
       <div className={cx("wrapper-btn")}>
         <Button className={cx("wrapper-btn--sell")} onClick={sellNft}>
-          SELL NFT
+          {loadingSellNft ? <Spin /> : "SELL NFT"}
         </Button>
         <Button className={cx("wrapper-btn--add")} onClick={addItem}>
           ADD NFT
-        </Button>
-        <Button className={cx("wrapper-btn--add")} onClick={createItem}>
-          CREATE ITEM
         </Button>
       </div>
     </div>

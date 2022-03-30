@@ -7,10 +7,8 @@ import MintNFTBox from "./MintNFTBox";
 import { Button } from "@mui/material";
 import { useWeb3React } from "@web3-react/core";
 import web3 from "web3";
-import { splitSignature } from "@ethersproject/bytes";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import {URL,KAWAII1155_ADDRESS} from "src/consts/constant";
+import { URL } from "src/consts/constant";
 const cx = cn.bind(styles);
 
 const MintNFT = ({ setIsMintNFT, gameSelected }) => {
@@ -165,6 +163,7 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
         {listNft.map((item, index) =>
           openMintNFTBox === index ? (
             <MintNFTBox
+              gameSelected={gameSelected}
               key={index}
               data={item}
               setStateForNftData={setStateForNftData}
@@ -192,7 +191,9 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
                 />
               </Col>
               <Col span={4}>{item?.name}</Col>
-              <Col span={4}>{item?.tokenId}</Col>
+              <Col span={4}>
+                <div className={cx("tokenId")}>{item?.tokenId}</div>
+              </Col>
               <Col span={4}>{item?.supply}</Col>
               <Col span={4}>{item?.category}</Col>
               <Col span={4} className={cx("preview")}>

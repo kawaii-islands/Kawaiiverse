@@ -3,7 +3,7 @@ $mobile: 576px;
   .table {
     font-size: 14px;
     line-height: 150%;
-    @media(max-width: $mobile){
+    @media (max-width: $mobile) {
       font-size: 13px;
       text-align: center;
     }
@@ -26,6 +26,17 @@ $mobile: 576px;
       margin-bottom: 5px;
       align-items: center;
 
+      .tokenIdError {
+        background-color: #ffffff33;
+        padding: 6px;
+        border-radius: 4px;
+        margin: 0px 7px 0px -7px;
+        border: 1px solid #b56f73;
+      }
+
+      .tokenId {
+      }
+
       .preview {
         color: #2cd7ff;
       }
@@ -36,7 +47,7 @@ $mobile: 576px;
     display: flex;
     align-items: center;
     justify-content: right;
-	margin-top: 28px;
+    margin-top: 28px;
 
     .submit {
       padding: 5px 25px;

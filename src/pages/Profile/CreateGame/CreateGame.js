@@ -172,6 +172,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
             {new Array(rowItem).fill().map((i,idx) => (
               <Item 
 							rowItem={rowItem}
+              idx={idx}
 							listToken={listToken} 
 							setListToken={setListToken} key={`token-item-${idx}`}/>
             ))}

@@ -60,7 +60,7 @@ const SellItemNFT = ({ gameSelected }) => {
 
   const createItem = async () => {
     try {
-      await write("createItem", library.provider, gameSelected, KAWAIIVERSE_NFT1155_ABI, [account, 1, 30], {
+      await write("createItem", library.provider, gameSelected, KAWAIIVERSE_NFT1155_ABI, [account, 123, 30], {
         from: account,
       });
     } catch (error) {
@@ -143,7 +143,16 @@ const SellItemNFT = ({ gameSelected }) => {
           stateMutability: "nonpayable",
           type: "function",
         },
-        [account, gameSelected, listSell[0].tokenId, listSell[0].quantity, Number(listSell[0].price), v, r, s],
+        [
+          account,
+          gameSelected,
+          listSell[0].tokenId,
+          listSell[0].quantity,
+          web3.utils.toWei(listSell[0].price),
+          v,
+          r,
+          s,
+        ],
       );
       console.log(
         account,
@@ -211,7 +220,7 @@ const SellItemNFT = ({ gameSelected }) => {
     const signature = await sign(account, data, library.provider);
     return signature;
   };
- 
+
   return (
     <div className={cx("table")}>
       <Row className={cx("table-header")}>
@@ -220,9 +229,7 @@ const SellItemNFT = ({ gameSelected }) => {
         </Col>
         <Col span={4}>Price/NFT</Col>
         <Col span={7}>Quantity</Col>
-        <Col span={1}>
-          {/* <input type="checkbox" /> */}
-        </Col>
+        <Col span={1}>{/* <input type="checkbox" /> */}</Col>
       </Row>
       <div className={cx("table-body")}>
         {new Array(rowItem).fill().map((i,idx) => (

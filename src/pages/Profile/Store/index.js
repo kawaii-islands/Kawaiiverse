@@ -21,7 +21,9 @@ const StoreProfile = ({ gameSelected }) => {
             Sell NFT
           </Button>
         </div>
-        <div className={cx("content")}>{isSellNFT ? <SellItemNFT gameSelected={gameSelected} /> : <ViewItemNFT />}</div>
+        <div className={cx("content")}>
+          {isSellNFT ? <SellItemNFT gameSelected={gameSelected} /> : <ViewItemNFT gameSelected={gameSelected} />}
+        </div>
       </div>
     </div>
   );

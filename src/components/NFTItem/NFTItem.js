@@ -9,7 +9,7 @@ const cx = cn.bind(styles);
 const web3 = new Web3(BSC_rpcUrls);
 
 const NFTItem = ({ onClick, data }) => {
-  // console.log(data);
+  // console.log("CALLED");
 
   return (
     <div className={cx("nft-item")} onClick={onClick}>

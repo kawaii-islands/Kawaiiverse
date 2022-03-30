@@ -32,15 +32,11 @@ const ViewItemNFT = ({ gameSelected }) => {
   }, [gameSelected]);
 
   useEffect(() => {
-    console.log("1.5");
     if (gameList.length > 0 && allItemFromGame.length > 0) {
-      console.log(gameList, allItemFromGame);
       logItemList();
     } else {
-      console.log("2.5");
       setGameItemList([]);
     }
-    console.log("3.5");
   }, [gameList, allItemFromGame]);
 
   const navigate = useNavigate();
@@ -83,7 +79,6 @@ const ViewItemNFT = ({ gameSelected }) => {
               lists.push({ gameAddress, gameName });
             }),
           ).then(() => {
-            console.log("then");
             setGameList(lists);
           });
         } catch (error) {
@@ -101,7 +96,6 @@ const ViewItemNFT = ({ gameSelected }) => {
     setLoadingListNFT(true);
     // setGameItemList([]);
     let list = [];
-    console.log("1");
     const tmpGameArray = [...Array(gameSelected ? 1 : gameList.length).keys()];
     try {
       const gameListData = await Promise.all(
@@ -113,7 +107,6 @@ const ViewItemNFT = ({ gameSelected }) => {
             KAWAII_STORE_ABI,
             [gameSelected ? gameSelected : gameList[idx].gameAddress],
           );
-          console.log("2");
           const tmpItemArray = Array.from({ length: gameItemLength }, (v, i) => i);
           const gameItemData = await Promise.all(
             tmpItemArray.map(async (nftId, index) => {
@@ -126,7 +119,6 @@ const ViewItemNFT = ({ gameSelected }) => {
               list.push(Object.assign({}, gameItem, itemInfo[0]));
             }),
           ).then(() => {
-            console.log("then2");
             setGameItemList(list);
           });
         }),

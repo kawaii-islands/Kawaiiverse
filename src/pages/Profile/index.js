@@ -18,10 +18,15 @@ import StoreProfile from "./Store/index";
 import Marketplace from "./Marketplace/index";
 
 import FilterMobile from "src/components/FilterMobile/FilterMobile";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { KAWAII1155_ADDRESS } from "src/consts/constant";
 const cx = cn.bind(styles);
 
+const tabObject = {
+  "create-game": 0,
+  game: 1,
+  store: 2,
+};
 
 const Profile = () => {
   const { account } = useWeb3React();
@@ -30,7 +35,20 @@ const Profile = () => {
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [gameList, setGameList] = useState([]);
   const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
+  const tabParam = useParams();
+
+  useEffect(() => {
+    setLoading(true);
+    if (tabParam.tab) {
+      setActiveTab(tabObject[tabParam.tab]);
+    }
+    setLoading(false);
+  }, [tabParam]);
+
+  useEffect(() => {
+    logInfo();
+  }, [account]);
 
   const getActiveTab = tab => {
     switch (tab) {
@@ -51,16 +69,6 @@ const Profile = () => {
         );
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
-
-  useEffect(() => {
-    logInfo();
-  }, [account]);
 
   const logInfo = async () => {
     if (account) {

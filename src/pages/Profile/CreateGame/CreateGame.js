@@ -11,6 +11,7 @@ import { useWeb3React } from "@web3-react/core";
 import trashIcon from "src/assets/icons/coolicon.svg";
 import { Button } from "@mui/material";
 import RELAY_ABI from "src/utils/abi/relay.json";
+import KAWAIIVERSE_NFT1155_ABI from "src/utils/abi/KawaiiverseNFT1155.json";
 import { RELAY_ADDRESS, KAWAIIVERSE_NFT1155_ADDRESS, FACTORY_ADDRESS } from "src/consts/address";
 import { Close } from "@mui/icons-material";
 import MainLayout from "src/components/MainLayout";
@@ -27,7 +28,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
 
   const [gameInfo, setgameInfo] = useState("");
   const [rowItem, setRowItem] = useState(0);
-	const [listToken, setListToken] = useState([]);
+  const [listToken, setListToken] = useState([]);
 
   const inputChangeHandler = (key, value) => {
     setgameInfo({ ...gameInfo, [key]: value });
@@ -101,9 +102,35 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
       toast.error(error.message || "An error occurred!");
     }
   };
-	const createToken = () => {
-		console.log(listToken)
-	}
+  const createToken = async () => {
+    console.log(listToken);
+    let listTokenId = listToken.map(token => token.tokenId);
+    let listTokenSupply = listToken.map(token => token.supply);
+    let listTokenAccount = Array(listTokenId.length).fill(account);
+    try {
+      if (chainId !== BSC_CHAIN_ID) {
+        const error = await createNetworkOrSwitch(library.provider);
+        if (error) {
+          throw new Error("Please change network to Testnet Binance smart chain.");
+        }
+      }
+      await write(
+        "createBatchItem",
+        library.provider,
+        gameSelected,
+        KAWAIIVERSE_NFT1155_ABI,
+        [listTokenAccount, listTokenId, listTokenSupply],
+        { from: account },
+        hash => {
+          console.log(hash);
+        },
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "An error occurred!");
+    }
+    console.log(listTokenId, listTokenSupply, listTokenAccount);
+  };
   return (
     <div className={cx("container")}>
       <div className={cx("form")}>
@@ -136,7 +163,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
         </div>
       </div>
       <div className={cx("divider")}></div>
-      <div className={cx("name-title")}>My game</div>
+      <div className={cx("name-title")}>Create Item for your Game:</div>
       {gameList?.map((gameName, idx) => (
         <div
           className={gameName.gameAddress == gameSelected ? cx("name-selected") : cx("name")}
@@ -169,16 +196,20 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
             <Col span={3}></Col>
           </Row>
           <div className={cx("modal-table-content")}>
-            {new Array(rowItem).fill().map((i,idx) => (
-              <Item 
-							rowItem={rowItem}
-              idx={idx}
-							listToken={listToken} 
-							setListToken={setListToken} key={`token-item-${idx}`}/>
+            {new Array(rowItem).fill().map((i, idx) => (
+              <Item
+                rowItem={rowItem}
+                idx={idx}
+                listToken={listToken}
+                setListToken={setListToken}
+                key={`token-item-${idx}`}
+              />
             ))}
           </div>
           <div className={cx("modal-footer")}>
-            <Button className={cx("modal-footer-btn")} onClick={createToken}>Confirm</Button>
+            <Button className={cx("modal-footer-btn")} onClick={createToken}>
+              Confirm
+            </Button>
           </div>
         </div>
       </Modal>

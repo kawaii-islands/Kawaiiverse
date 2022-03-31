@@ -5,7 +5,7 @@ import filter from "../../assets/icons/filter.svg";
 import logoKawaii from "../../assets/images/logo_kawaii.png";
 import { DownOutlined, PlusOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, tableBodyClasses } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router";
 import { Col, Row } from "antd";
 
 const cx = cn.bind(styles);
@@ -24,7 +24,7 @@ const tab = [
 ]
 
 const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveTab }) => {
-	const navigate = useNavigate();
+	const history = useHistory();
 
 	const handleGameClick = (address, idx) => {
 		console.log(address);
@@ -41,7 +41,7 @@ const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveT
 		<div className={cx("filter")}>
 			<div className={cx("create-game")} onClick={() => {
 				setActiveTab(0);
-				navigate('/profile/create-game')
+				history.push('/profile/create-game')
 			}}>
 				<span>Create game</span>
 				<PlusOutlined />
@@ -53,7 +53,7 @@ const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveT
 						span={12}
 						onClick={() => {
 							setActiveTab(1);
-							navigate('/profile/game');
+							history.push('/profile/game');
 						}}
 					>
 						<span className={cx("title", activeTab === 1 && "active")}>Game</span>
@@ -62,7 +62,7 @@ const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveT
 						span={12}
 						onClick={() => {
 							setActiveTab(2);
-							navigate('/profile/store');
+							history.push('/profile/store');
 						}}
 					>
 						<span className={cx("title", activeTab === 2 && "active")}>Store</span>
@@ -93,7 +93,7 @@ const Filter = ({ gameList, setGameSelected, gameSelected, activeTab, setActiveT
 					key={id}
 					onClick={() => {
 						setActiveTab(tab.key);
-						navigate(`/profile/${tab.path}`);
+						history.push(`/profile/${tab.path}`);
 					}}
 				>
 					<div className={cx("collapse-title")} onClick={() => setShow(!show)}>

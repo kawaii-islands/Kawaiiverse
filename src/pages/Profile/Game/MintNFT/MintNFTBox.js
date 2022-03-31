@@ -3,7 +3,7 @@ import styles from "./MintNFTBox.module.scss";
 import cn from "classnames/bind";
 import { toast } from "react-toastify";
 import { Col, Row, Spin } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router";
 import subtractIcon from "src/assets/icons/subtract.svg";
 import uploadImageIcon from "src/assets/icons/uploadImage.svg";
 import plusCircleIcon from "src/assets/icons/plus_circle.svg";
@@ -57,12 +57,12 @@ const MintNFTBox = ({
   setListNft,
   openMintNFTBox,
 }) => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [loadingUploadImg, setLoadingUploadImg] = useState(false);
-  const [loadingUpdateSupply, setLoadingUpdateSupply] = useState(false);
   const [listAttribute, setListAttribute] = useState([data.attributes]);
   const [invalidToken, setInvalidToken] = useState(false);
+  const [loadingUpdateSupply, setLoadingUpdateSupply] = useState(false);
 
   useEffect(() => {
     setListAttribute(data.attributes);
@@ -108,7 +108,6 @@ const MintNFTBox = ({
       ]);
       console.log(itemSupply);
       itemSupply != 0 ? setInvalidToken(false) : setInvalidToken(true);
-      itemSupply != 0 ? setStateForNftData("validToken", 1) : setStateForNftData("validToken", 0);
       setStateForNftData("supply", itemSupply);
     } catch (error) {
       console.log(error);

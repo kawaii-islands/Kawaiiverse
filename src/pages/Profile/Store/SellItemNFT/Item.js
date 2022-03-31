@@ -190,7 +190,7 @@ const Item = ({ list, listSell, setListSell,setCanAdd }) => {
       pageSize={ITEM_PER_PAGE}
       itemRender={itemRender}
       onChange={handleChange}
-      
+      className={cx("pagination")}
       />}
     </>
   );

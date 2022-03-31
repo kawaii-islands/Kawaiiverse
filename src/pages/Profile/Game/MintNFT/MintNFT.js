@@ -8,7 +8,8 @@ import { Button } from "@mui/material";
 import { useWeb3React } from "@web3-react/core";
 import web3 from "web3";
 import axios from "axios";
-import { URL } from "src/consts/constant";
+import { URL, KAWAII1155_ADDRESS } from "src/consts/constant";
+
 const cx = cn.bind(styles);
 
 const MintNFT = ({ setIsMintNFT, gameSelected }) => {
@@ -124,15 +125,16 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
   const submit = async () => {
     setLoadingSubmit(true);
 
-    const signature = await getSignature();
-    let bodyParams = {
-      nft1155: gameSelected,
-      owner: account,
-      sign: signature,
-      data: listNft,
-    };
-
     try {
+      const signature = await getSignature();
+
+      let bodyParams = {
+        nft1155: gameSelected,
+        owner: account,
+        sign: signature,
+        data: listNft,
+      };
+
       const res = await axios.post(`${URL}/v1/nft`, bodyParams);
       if (res.status === 200) {
         console.log(res);
@@ -141,8 +143,9 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
       }
     } catch (err) {
       console.log(err.response);
-      setLoadingSubmit(false);
     }
+
+    setLoadingSubmit(false);
   };
 
   return (
@@ -163,7 +166,6 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
         {listNft.map((item, index) =>
           openMintNFTBox === index ? (
             <MintNFTBox
-              gameSelected={gameSelected}
               key={index}
               data={item}
               setStateForNftData={setStateForNftData}
@@ -171,6 +173,7 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
               setOpenMintNFTBox={setOpenMintNFTBox}
               listNft={listNft}
               setListNft={setListNft}
+              gameSelected={gameSelected}
             />
           ) : (
             <Row
@@ -191,9 +194,7 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
                 />
               </Col>
               <Col span={4}>{item?.name}</Col>
-              <Col span={4}>
-                <div className={cx("tokenId")}>{item?.tokenId}</div>
-              </Col>
+              <Col span={4}>{item?.tokenId}</Col>
               <Col span={4}>{item?.supply}</Col>
               <Col span={4}>{item?.category}</Col>
               <Col span={4} className={cx("preview")}>

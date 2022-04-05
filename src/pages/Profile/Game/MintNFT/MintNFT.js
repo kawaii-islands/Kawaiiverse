@@ -39,20 +39,25 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
     rarity: "string",
     supply: 0,
     category: "string",
+    validToken: "",
   };
 
   const [listNft, setListNft] = useState([oneNft]);
 
   useEffect(() => {
+    console.log("reload");
+    console.log(listNft);
     setTimeout(() => {
       setLoading(false);
     }, 1500);
-  }, []);
+  }, [listNft]);
 
   const setStateForNftData = (key, value) => {
     let listNftCopy = [...listNft];
+    console.log(key, value);
+    console.log(listNftCopy);
     listNftCopy[openMintNFTBox] = { ...listNftCopy[openMintNFTBox], [key]: value };
-
+    console.log(listNftCopy);
     setListNft(listNftCopy);
   };
 
@@ -194,7 +199,9 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
                 />
               </Col>
               <Col span={4}>{item?.name}</Col>
-              <Col span={4}>{item?.tokenId}</Col>
+              <Col span={4}>
+                <div className={cx(item?.validToken ? "tokenId" : "tokenIdError")}>{item?.tokenId}</div>
+              </Col>
               <Col span={4}>{item?.supply}</Col>
               <Col span={4}>{item?.category}</Col>
               <Col span={4} className={cx("preview")}>

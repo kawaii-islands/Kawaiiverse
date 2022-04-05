@@ -29,7 +29,7 @@ const SellItemNFT = ({ gameSelected }) => {
   useEffect(() => {
     getListNft();
     getAllowance();
-  }, [gameSelected]);
+  }, [gameSelected, account]);
 
   const getListNft = async () => {
     try {
@@ -47,6 +47,9 @@ const SellItemNFT = ({ gameSelected }) => {
   };
 
   const getAllowance = async () => {
+    if (!account) {
+      return;
+    }
     const isApprovedForAll = await read("isApprovedForAll", BSC_CHAIN_ID, gameSelected, KAWAIIVERSE_NFT1155_ABI, [
       account,
       KAWAIIVERSE_STORE_ADDRESS,

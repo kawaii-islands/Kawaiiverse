@@ -25,7 +25,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
 
   const { account, chainId, library } = useWeb3React();
   const [loading, setLoading] = useState(false);
-
+  const [loadingCreateItem, setLoadingCreateItem] = useState(false);
   const [gameInfo, setgameInfo] = useState("");
   const [rowItem, setRowItem] = useState(0);
   const [listToken, setListToken] = useState([]);
@@ -103,6 +103,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
     }
   };
   const createToken = async () => {
+    setLoadingCreateItem(true);
     console.log(listToken);
     let listTokenId = listToken.map(token => token.tokenId);
     let listTokenSupply = listToken.map(token => token.supply);
@@ -130,6 +131,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
       toast.error(error.message || "An error occurred!");
     }
     console.log(listTokenId, listTokenSupply, listTokenAccount);
+    setLoadingCreateItem(false);
   };
   return (
     <div className={cx("container")}>
@@ -208,7 +210,7 @@ const CreateGame = ({ gameList, setGameSelected, gameSelected, logInfo }) => {
           </div>
           <div className={cx("modal-footer")}>
             <Button className={cx("modal-footer-btn")} onClick={createToken}>
-              Confirm
+              {loadingCreateItem ? <Spin /> : "Confirm"}
             </Button>
           </div>
         </div>

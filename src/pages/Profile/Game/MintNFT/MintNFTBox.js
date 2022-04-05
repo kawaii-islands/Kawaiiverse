@@ -75,14 +75,12 @@ const MintNFTBox = ({
   const setDetailAttribute = (key, value, index) => {
     let listAttributeCopy = [...listAttribute];
     listAttributeCopy[index] = { ...listAttributeCopy[index], [key]: value };
-
     setListAttribute(listAttributeCopy);
   };
 
   const handleUploadImage = async e => {
     setLoadingUploadImg(true);
     const file = e.target.files[0];
-
     try {
       const added = await client.add(file);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
@@ -95,7 +93,6 @@ const MintNFTBox = ({
   };
 
   const handleChangeTokenId = async e => {
-    // setStateForNftData("tokenId", e.target.value);
     setLoadingUpdateSupply(true);
     checkValidTokenId();
     setLoadingUpdateSupply(false);
@@ -108,6 +105,7 @@ const MintNFTBox = ({
       ]);
       console.log(itemSupply);
       itemSupply != 0 ? setInvalidToken(false) : setInvalidToken(true);
+      itemSupply != 0 ? setStateForNftData("validToken", true) : setStateForNftData("validToken", false);
       setStateForNftData("supply", itemSupply);
     } catch (error) {
       console.log(error);

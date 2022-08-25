@@ -11,7 +11,7 @@ $mobile: 576px;
 
   .first-row {
     padding: 12px 0px 20px 0px;
-    align-items: center;
+    align-items: flex-start;
 
     .preview {
       color: #2cd7ff;
@@ -35,31 +35,30 @@ $mobile: 576px;
     box-sizing: border-box;
     border-radius: 6px;
     margin: 16px 30px;
-    @media(max-width: $mobile){
+    @media (max-width: $mobile) {
       margin: 8px 12px;
       padding: 12px;
     }
     .row {
       align-items: center;
-      &-desc{
+      &-desc {
         padding: 24px 0px;
-        @media(max-width: $tablet){
+        @media (max-width: $tablet) {
           padding: 8px 0px;
         }
       }
-      .table-wrapper{
-        @media(max-width: $break-point-1){
-        flex-direction: column;
-
+      .table-wrapper {
+        @media (max-width: $break-point-1) {
+          flex-direction: column;
         }
       }
       .one-field {
-        @media(max-width: $tablet){
+        @media (max-width: $tablet) {
           margin-top: 4px;
         }
         display: flex;
         align-items: center;
-        
+
         .title {
           font-weight: 400;
           font-size: 14px;
@@ -88,19 +87,19 @@ $mobile: 576px;
         .table {
           margin-left: 30px;
           width: 80%;
-          @media(max-width: $break-point-1){
+          @media (max-width: $break-point-1) {
             width: 100%;
             text-align: center;
-            }
-          @media(max-width: 600px){
+          }
+          @media (max-width: 600px) {
             margin-left: 0px;
             margin-top: 10px;
             width: 100%;
           }
         }
       }
-      .col-image{
-        @media(max-width: $break-point-1){
+      .col-image {
+        @media (max-width: $break-point-1) {
           // flex-basis: 70%;
         }
       }
@@ -112,7 +111,7 @@ $mobile: 576px;
     align-items: center;
     justify-content: space-between;
     padding: 0px 30px 30px 30px;
-    @media(max-width: $mobile){
+    @media (max-width: $mobile) {
       padding: 8px 20px 20px 20px;
     }
     .left {
@@ -123,7 +122,7 @@ $mobile: 576px;
     }
 
     .right {
-      @media(max-width: $mobile){
+      @media (max-width: $mobile) {
         text-align: center;
       }
       .confirm {
@@ -135,7 +134,7 @@ $mobile: 576px;
         padding: 5px 20px;
         color: #ffffff;
         margin-right: 12px;
-        @media(max-width: $mobile){
+        @media (max-width: $mobile) {
           margin-bottom: 8px;
           width: 45px;
           margin-right: 0px;
@@ -150,7 +149,7 @@ $mobile: 576px;
         line-height: 150%;
         padding: 5px 20px;
         color: #ffffff;
-        @media(max-width: $mobile){
+        @media (max-width: $mobile) {
           width: 45px;
         }
       }

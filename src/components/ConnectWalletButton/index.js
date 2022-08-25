@@ -5,20 +5,20 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import styles from './index.module.scss';
 import cn from "classnames/bind";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router";
 
 const cx = cn.bind();
 
 const ConnectWalletButton = () => {
 	const { account } = useWeb3React();
 	const [show, setShow] = useState(false);
-	const navigate = useNavigate();
+	const history = useHistory();
 
 	return (
 		<>
 			<div
 				onClick={() => {
-					account ? navigate('/profile') : setShow(true);
+					account ?history.push('/profile') : setShow(true);
 				}}
 				className={cx("cn-wallet")}
 			>

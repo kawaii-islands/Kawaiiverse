@@ -7,13 +7,10 @@ import MintNFTBox from "./MintNFTBox";
 import { Button } from "@mui/material";
 import { useWeb3React } from "@web3-react/core";
 import web3 from "web3";
-import { splitSignature } from "@ethersproject/bytes";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { URL, KAWAII1155_ADDRESS } from "src/consts/constant";
 
 const cx = cn.bind(styles);
-const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
-const URL = "http://159.223.81.170:3000";
 
 const MintNFT = ({ setIsMintNFT, gameSelected }) => {
   const { account, library } = useWeb3React();
@@ -128,15 +125,16 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
   const submit = async () => {
     setLoadingSubmit(true);
 
-    const signature = await getSignature();
-    let bodyParams = {
-      nft1155: gameSelected,
-      owner: account,
-      sign: signature,
-      data: listNft,
-    };
-
     try {
+      const signature = await getSignature();
+
+      let bodyParams = {
+        nft1155: gameSelected,
+        owner: account,
+        sign: signature,
+        data: listNft,
+      };
+
       const res = await axios.post(`${URL}/v1/nft`, bodyParams);
       if (res.status === 200) {
         console.log(res);
@@ -146,6 +144,8 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
     } catch (err) {
       console.log(err.response);
     }
+
+    setLoadingSubmit(false);
   };
 
   return (
@@ -173,6 +173,7 @@ const MintNFT = ({ setIsMintNFT, gameSelected }) => {
               setOpenMintNFTBox={setOpenMintNFTBox}
               listNft={listNft}
               setListNft={setListNft}
+              gameSelected={gameSelected}
             />
           ) : (
             <Row

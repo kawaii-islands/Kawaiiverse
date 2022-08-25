@@ -4,13 +4,13 @@ import styles from "./index.module.scss";
 import cn from "classnames/bind";
 import NavModal from "./NavModal";
 import ConnectWalletButton from "../ConnectWalletButton";
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from "react-router";
 
 const cx = cn.bind(styles);
 
 const Header = () => {
 	const [openNav, setOpenNav] = useState(false);
-	const navigate = useNavigate();
+	const history = useHistory();
 
 	return (
 		<nav className={cx("navbar")}>
@@ -25,20 +25,20 @@ const Header = () => {
 						src={logo}
 						alt="Logo"
 						className={cx("item")}
-						onClick={() => navigate("/")}
+						onClick={() => history.push("/")}
 					/>
 					<div className={cx("list")}>
 						<div
 							className={cx("item")}
-							onClick={() => navigate("/about")}
+							onClick={() => history.push("/about")}
 						>About</div>
 						<div
 							className={cx("item")}
-							onClick={() => navigate("/store")}
+							onClick={() => history.push("/store")}
 						>Store</div>
 						<div
 							className={cx("item")}
-							onClick={() => navigate("/game")}
+							onClick={() => history.push("/game")}
 						>Game</div>
 					</div>
 				</div>

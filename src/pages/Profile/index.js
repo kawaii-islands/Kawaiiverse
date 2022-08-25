@@ -18,16 +18,16 @@ import StoreProfile from "./Store/index";
 import Marketplace from "./Marketplace/index";
 
 import FilterMobile from "src/components/FilterMobile/FilterMobile";
-import { Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { KAWAII1155_ADDRESS } from "src/consts/constant";
+
 const cx = cn.bind(styles);
 
-const KAWAII1155_ADDRESS = "0xD6eb653866F629e372151f6b5a12762D16E192f5";
-
 const tabObject = {
-	'create-game': 0,
-	'game': 1,
-	'store': 2,
-}
+	"create-game": 0,
+	game: 1,
+	store: 2,
+};
 
 const Profile = () => {
 	const { account } = useWeb3React();
@@ -36,13 +36,13 @@ const Profile = () => {
 	const [openFilterModal, setOpenFilterModal] = useState(false);
 	const [gameList, setGameList] = useState([]);
 	const [gameSelected, setGameSelected] = useState(KAWAII1155_ADDRESS);
-	const [activeTab, setActiveTab] = useState(0);
+	const [activeTab, setActiveTab] = useState(1);
 	const tabParam = useParams();
 
 	useEffect(() => {
 		setLoading(true);
 		if (tabParam.tab) {
-			setActiveTab(tabObject[tabParam.tab])
+			setActiveTab(tabObject[tabParam.tab]);
 		}
 		setLoading(false);
 	}, [tabParam]);
@@ -56,7 +56,7 @@ const Profile = () => {
 			case 1:
 				return <Game gameSelected={gameSelected} />;
 			case 2:
-				return <StoreProfile />;
+				return <StoreProfile gameSelected={gameSelected} />;
 			case 3:
 				return <Marketplace />;
 			default:
@@ -121,7 +121,6 @@ const Profile = () => {
 					</Col>
 				</Row>
 			</div>
-			<Outlet />
 		</MainLayout>
 	);
 };
